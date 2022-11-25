@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ProxyVyV.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ProxyVyV_DteLocalVyV_DTELocal" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://bes-cert.bestechnology.cl/WSFactLocal/DteLocal.asmx</Value>
+    </Setting>
+    <Setting Name="ProxyVyV_cl_facturacion_ws_wsplano" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ws.facturacion.cl/WSDS/wsplano.asmx</Value>
+    </Setting>
+    <Setting Name="ProxyVyV_DteGetOneWS_GOServicePortService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.244.229.41:9191/ws/GOService</Value>
+    </Setting>
+    <Setting Name="ProxyVyV_DteFacele_DoceleOL" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://caoba.docele.cl:443/cl-dol/DoceleOLService</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

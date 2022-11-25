@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.facele.cl/DoceleOL/" name="DoceleOL" targetNamespace="http://www.facele.cl/DoceleOL/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.facele.cl/DoceleOL/">
+      <xsd:element name="generaDTE">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="tipoDTE" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="formato">
+              <xsd:annotation>
+                <xsd:documentation>
+          				Define el formatoa el archivo de ingreso
+          			</xsd:documentation>
+              </xsd:annotation>
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:enumeration value="XML" />
+                  <xsd:enumeration value="TXT" />
+                  <xsd:enumeration value="TXT123" />
+                  <xsd:enumeration value="XML_OBS" />
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="1" name="txt" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="xml" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="uuid">
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:whiteSpace value="collapse" />
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="generaDTEResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="estadoOperacion" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="descripcionOperacion" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="tipoDTE" type="xsd:int" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="folioDTE" type="xsd:long" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="obtieneDTE">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="tipoDTE" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="folioDTE" type="xsd:long" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="formato">
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:enumeration value="PDF" />
+                  <xsd:enumeration value="XML" />
+                  <xsd:enumeration value="PDF_TERMICO" />
+                  <xsd:enumeration value="URL_PDF" />
+                  <xsd:enumeration value="PDF_2N" />
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="1" name="cedible" type="xsd:boolean">
+              <xsd:annotation>
+                <xsd:documentation>
+      						Si es true obtiene el la representacion
+      						impresa con el merito ejecutivo. Si es
+      						false no una representacion simple.
+      					</xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element minOccurs="0" maxOccurs="1" name="cantidad" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="obtieneDTEResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="estadoOperacion" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="descripcionOperacion" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="XML" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PDF" type="xsd:base64Binary" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="URL" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sinConfirmar">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sinConfirmarResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="estadoOperacion" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="descripcionOperacion" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="cantidadDocumentos" type="xsd:int" />
+            <xsd:element minOccurs="0" maxOccurs="unbounded" name="Documento" type="tns:Documento" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="Documento">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="tipoDTE" type="xsd:int" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="folioDTE" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="controversia">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="tipoDTE" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="folioDTE" type="xsd:long" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="operacion">
+              <xsd:annotation>
+                <xsd:documentation>[libera]: significa que anula documento generado y reutiliza el folio, [anula]: significa que anula documento y no reutiliza folio, [confirma]: significa que confirma documento para ser publicado</xsd:documentation>
+              </xsd:annotation>
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:enumeration value="libera" />
+                  <xsd:enumeration value="anula" />
+                  <xsd:enumeration value="confirma" />
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="controversiaResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="estadoOperacion" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="descripcionOperacion" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="obtieneBorrador">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="tipoDTE" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="formato" type="tns:FormatoType" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="txt" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="xml" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="obtieneBorradorResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="estadoOperacion" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="descripcionOperacion" type="xsd:string" />
+            <xsd:element minOccurs="0" maxOccurs="1" name="PDF" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="FormatoType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="TXT" />
+          <xsd:enumeration value="TXT123" />
+          <xsd:enumeration value="XML" />
+          <xsd:enumeration value="XML_OBS" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="reimprimeDTE">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="tipoDTE" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="folioDTE" type="xsd:long" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="reimprimeDTEResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="estadoOperacion" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="descripcionOperacion" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="actualizarObservacionesDTE">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="rutEmisor" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="tipoDTE" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="folioDTE" type="xsd:long" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="observacionesTXT" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="actualizarObservacionesDTEResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="estadoOperacion" type="xsd:int" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="descripcionOperacion" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="generaDTERequest">
+    <wsdl:part name="parameters" element="tns:generaDTE" />
+  </wsdl:message>
+  <wsdl:message name="generaDTEResponse">
+    <wsdl:part name="parameters" element="tns:generaDTEResponse" />
+  </wsdl:message>
+  <wsdl:message name="obtieneDTERequest">
+    <wsdl:part name="parameters" element="tns:obtieneDTE" />
+  </wsdl:message>
+  <wsdl:message name="obtieneDTEResponse">
+    <wsdl:part name="parameters" element="tns:obtieneDTEResponse" />
+  </wsdl:message>
+  <wsdl:message name="sinConfirmarRequest">
+    <wsdl:part name="parameters" element="tns:sinConfirmar" />
+  </wsdl:message>
+  <wsdl:message name="sinConfirmarResponse">
+    <wsdl:part name="parameters" element="tns:sinConfirmarResponse" />
+  </wsdl:message>
+  <wsdl:message name="controversiaRequest">
+    <wsdl:part name="parameters" element="tns:controversia" />
+  </wsdl:message>
+  <wsdl:message name="controversiaResponse">
+    <wsdl:part name="parameters" element="tns:controversiaResponse" />
+  </wsdl:message>
+  <wsdl:message name="obtieneBorradorRequest">
+    <wsdl:part name="parameters" element="tns:obtieneBorrador" />
+  </wsdl:message>
+  <wsdl:message name="obtieneBorradorResponse">
+    <wsdl:part name="parameters" element="tns:obtieneBorradorResponse" />
+  </wsdl:message>
+  <wsdl:message name="reimprimeDTERequest">
+    <wsdl:part name="parameters" element="tns:reimprimeDTE" />
+  </wsdl:message>
+  <wsdl:message name="reimprimeDTEResponse">
+    <wsdl:part name="parameters" element="tns:reimprimeDTEResponse" />
+  </wsdl:message>
+  <wsdl:message name="actualizarObservacionesDTERequest">
+    <wsdl:part name="parameters" element="tns:actualizarObservacionesDTE" />
+  </wsdl:message>
+  <wsdl:message name="actualizarObservacionesDTEResponse">
+    <wsdl:part name="parameters" element="tns:actualizarObservacionesDTEResponse" />
+  </wsdl:message>
+  <wsdl:portType name="DoceleOL">
+    <wsdl:operation name="generaDTE">
+      <wsdl:input message="tns:generaDTERequest" />
+      <wsdl:output message="tns:generaDTEResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="obtieneDTE">
+      <wsdl:input message="tns:obtieneDTERequest" />
+      <wsdl:output message="tns:obtieneDTEResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="sinConfirmar">
+      <wsdl:input message="tns:sinConfirmarRequest" />
+      <wsdl:output message="tns:sinConfirmarResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="controversia">
+      <wsdl:input message="tns:controversiaRequest" />
+      <wsdl:output message="tns:controversiaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="obtieneBorrador">
+      <wsdl:input message="tns:obtieneBorradorRequest" />
+      <wsdl:output message="tns:obtieneBorradorResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="reimprimeDTE">
+      <wsdl:input message="tns:reimprimeDTERequest" />
+      <wsdl:output message="tns:reimprimeDTEResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="actualizarObservacionesDTE">
+      <wsdl:input message="tns:actualizarObservacionesDTERequest" />
+      <wsdl:output message="tns:actualizarObservacionesDTEResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DoceleOLSOAP" type="tns:DoceleOL">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generaDTE">
+      <soap:operation soapAction="http://www.facele.cl/DoceleOL/generaDTE" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtieneDTE">
+      <soap:operation soapAction="http://www.facele.cl/DoceleOL/obtieneDTE" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sinConfirmar">
+      <soap:operation soapAction="http://www.facele.cl/DoceleOL/sinConfirmar" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="controversia">
+      <soap:operation soapAction="http://www.facele.cl/DoceleOL/controversia" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtieneBorrador">
+      <soap:operation soapAction="http://www.facele.cl/DoceleOL/obtieneBorrador" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reimprimeDTE">
+      <soap:operation soapAction="http://www.facele.cl/DoceleOL/reimprimeDTE" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="actualizarObservacionesDTE">
+      <soap:operation soapAction="http://www.facele.cl/DoceleOL/actualizarObservacionesDTE" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DoceleOL">
+    <wsdl:port name="DoceleOLService" binding="tns:DoceleOLSOAP">
+      <soap:address location="https://caoba.docele.cl:443/cl-dol/DoceleOLService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

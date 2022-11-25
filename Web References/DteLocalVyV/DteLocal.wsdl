@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="Carga_TXTDTE">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ArchivoTXT" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TipoArchivo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Carga_TXTDTEResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Carga_TXTDTEResult" type="tns:ProcesarTXT" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProcesarTXT">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PDF" type="s:base64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="PDFCedible" type="s:base64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="XML" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Estatus" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MsgEstatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Carga_TXTBoleta">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ArchivoTXT" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TipoArchivo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Carga_TXTBoletaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Carga_TXTBoletaResult" type="tns:ProcesarTXTBoleta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProcesarTXTBoleta">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PDF" type="s:base64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="XML" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Estatus" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MsgEstatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Solicitar_Folio">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RutEmpresa" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TipoDocto" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Solicitar_FolioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Solicitar_FolioResult" type="tns:SolicitarFolio" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SolicitarFolio">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TipoDocto" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Folio" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Estatus" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MsgEstatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Carga_LibroCV">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ArchivoTXT" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TipoArchivo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Carga_LibroCVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Carga_LibroCVResult" type="tns:ProcesarLCV" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProcesarLCV">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Estatus" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MsgEstatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Carga_LibroGuia">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ArchivoTXT" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TipoArchivo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Carga_LibroGuiaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Carga_LibroGuiaResult" type="tns:ProcesarLGuia" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ProcesarLGuia">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Estatus" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MsgEstatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Estado_DTE">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RUTEmpresa" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TipoDocto" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="NroDocto" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Estado_DTEResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Estado_DTEResult" type="tns:EstadoDocto" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EstadoDocto">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EstadoDTE" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DescEstado" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Estatus" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MsgEstatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Confirmar_Docto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RutEmpresa" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TipoDocto" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="NroDocto" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Confirmar_DoctoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Confirmar_DoctoResult" type="tns:EstadoDocto" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="Carga_TXTDTESoapIn">
+    <wsdl:part name="parameters" element="tns:Carga_TXTDTE" />
+  </wsdl:message>
+  <wsdl:message name="Carga_TXTDTESoapOut">
+    <wsdl:part name="parameters" element="tns:Carga_TXTDTEResponse" />
+  </wsdl:message>
+  <wsdl:message name="Carga_TXTBoletaSoapIn">
+    <wsdl:part name="parameters" element="tns:Carga_TXTBoleta" />
+  </wsdl:message>
+  <wsdl:message name="Carga_TXTBoletaSoapOut">
+    <wsdl:part name="parameters" element="tns:Carga_TXTBoletaResponse" />
+  </wsdl:message>
+  <wsdl:message name="Solicitar_FolioSoapIn">
+    <wsdl:part name="parameters" element="tns:Solicitar_Folio" />
+  </wsdl:message>
+  <wsdl:message name="Solicitar_FolioSoapOut">
+    <wsdl:part name="parameters" element="tns:Solicitar_FolioResponse" />
+  </wsdl:message>
+  <wsdl:message name="Carga_LibroCVSoapIn">
+    <wsdl:part name="parameters" element="tns:Carga_LibroCV" />
+  </wsdl:message>
+  <wsdl:message name="Carga_LibroCVSoapOut">
+    <wsdl:part name="parameters" element="tns:Carga_LibroCVResponse" />
+  </wsdl:message>
+  <wsdl:message name="Carga_LibroGuiaSoapIn">
+    <wsdl:part name="parameters" element="tns:Carga_LibroGuia" />
+  </wsdl:message>
+  <wsdl:message name="Carga_LibroGuiaSoapOut">
+    <wsdl:part name="parameters" element="tns:Carga_LibroGuiaResponse" />
+  </wsdl:message>
+  <wsdl:message name="Estado_DTESoapIn">
+    <wsdl:part name="parameters" element="tns:Estado_DTE" />
+  </wsdl:message>
+  <wsdl:message name="Estado_DTESoapOut">
+    <wsdl:part name="parameters" element="tns:Estado_DTEResponse" />
+  </wsdl:message>
+  <wsdl:message name="Confirmar_DoctoSoapIn">
+    <wsdl:part name="parameters" element="tns:Confirmar_Docto" />
+  </wsdl:message>
+  <wsdl:message name="Confirmar_DoctoSoapOut">
+    <wsdl:part name="parameters" element="tns:Confirmar_DoctoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="DTELocalSoap">
+    <wsdl:operation name="Carga_TXTDTE">
+      <wsdl:input message="tns:Carga_TXTDTESoapIn" />
+      <wsdl:output message="tns:Carga_TXTDTESoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Carga_TXTBoleta">
+      <wsdl:input message="tns:Carga_TXTBoletaSoapIn" />
+      <wsdl:output message="tns:Carga_TXTBoletaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Solicitar_Folio">
+      <wsdl:input message="tns:Solicitar_FolioSoapIn" />
+      <wsdl:output message="tns:Solicitar_FolioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Carga_LibroCV">
+      <wsdl:input message="tns:Carga_LibroCVSoapIn" />
+      <wsdl:output message="tns:Carga_LibroCVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Carga_LibroGuia">
+      <wsdl:input message="tns:Carga_LibroGuiaSoapIn" />
+      <wsdl:output message="tns:Carga_LibroGuiaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Estado_DTE">
+      <wsdl:input message="tns:Estado_DTESoapIn" />
+      <wsdl:output message="tns:Estado_DTESoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Confirmar_Docto">
+      <wsdl:input message="tns:Confirmar_DoctoSoapIn" />
+      <wsdl:output message="tns:Confirmar_DoctoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DTELocalSoap" type="tns:DTELocalSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Carga_TXTDTE">
+      <soap:operation soapAction="http://tempuri.org/Carga_TXTDTE" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Carga_TXTBoleta">
+      <soap:operation soapAction="http://tempuri.org/Carga_TXTBoleta" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Solicitar_Folio">
+      <soap:operation soapAction="http://tempuri.org/Solicitar_Folio" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Carga_LibroCV">
+      <soap:operation soapAction="http://tempuri.org/Carga_LibroCV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Carga_LibroGuia">
+      <soap:operation soapAction="http://tempuri.org/Carga_LibroGuia" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Estado_DTE">
+      <soap:operation soapAction="http://tempuri.org/Estado_DTE" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Confirmar_Docto">
+      <soap:operation soapAction="http://tempuri.org/Confirmar_Docto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="DTELocalSoap12" type="tns:DTELocalSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Carga_TXTDTE">
+      <soap12:operation soapAction="http://tempuri.org/Carga_TXTDTE" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Carga_TXTBoleta">
+      <soap12:operation soapAction="http://tempuri.org/Carga_TXTBoleta" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Solicitar_Folio">
+      <soap12:operation soapAction="http://tempuri.org/Solicitar_Folio" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Carga_LibroCV">
+      <soap12:operation soapAction="http://tempuri.org/Carga_LibroCV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Carga_LibroGuia">
+      <soap12:operation soapAction="http://tempuri.org/Carga_LibroGuia" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Estado_DTE">
+      <soap12:operation soapAction="http://tempuri.org/Estado_DTE" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Confirmar_Docto">
+      <soap12:operation soapAction="http://tempuri.org/Confirmar_Docto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DTELocal">
+    <wsdl:port name="DTELocalSoap" binding="tns:DTELocalSoap">
+      <soap:address location="http://bes-cert.bestechnology.cl/WSFactLocal/DteLocal.asmx" />
+    </wsdl:port>
+    <wsdl:port name="DTELocalSoap12" binding="tns:DTELocalSoap12">
+      <soap12:address location="http://bes-cert.bestechnology.cl/WSFactLocal/DteLocal.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

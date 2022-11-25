@@ -1,0 +1,287 @@
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\ProxyVyV.exe.config
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\ProxyVyV.exe
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\ProxyVyV.pdb
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\AsyncIO.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\log4net.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\Microsoft.Web.Services3.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\MQTTnet.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\NaCl.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\NetMQ.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Buffers.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Memory.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.ValueTuple.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\Transbank.dll
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\AsyncIO.pdb
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\log4net.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\NaCl.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\NetMQ.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Buffers.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Memory.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\karin\source\repos\ProxyVyV\bin\Debug\System.ValueTuple.xml
+C:\Users\karin\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csprojAssemblyReference.cache
+C:\Users\karin\source\repos\ProxyVyV\obj\Debug\ProxyVyV.Properties.Resources.resources
+C:\Users\karin\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.GenerateResource.cache
+C:\Users\karin\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CoreCompileInputs.cache
+C:\Users\karin\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CopyComplete
+C:\Users\karin\source\repos\ProxyVyV\obj\Debug\ProxyVyV.exe
+C:\Users\karin\source\repos\ProxyVyV\obj\Debug\ProxyVyV.pdb
+C:\Users\karin\source\repos\ProxyVyV\obj\Debug\ProxyVyV.ProxyVyV.Init.resources
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\ProxyVyV.exe.config
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\ProxyVyV.exe
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\ProxyVyV.pdb
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\AsyncIO.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\DBNeT.SEMPOS.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\EntityFramework.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\log4net.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\Microsoft.Web.Services3.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\MQTTnet.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\NaCl.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\NetMQ.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\NLog.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\RestSharp.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Buffers.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Memory.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.ValueTuple.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\Transbank.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\AsyncIO.pdb
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\EntityFramework.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\log4net.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\NaCl.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\NetMQ.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\NLog.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\RestSharp.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Buffers.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Memory.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\bin\Debug\System.ValueTuple.xml
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csprojAssemblyReference.cache
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\Interop.OposPOSPrinter_CCO.dll
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.ResolveComReference.cache
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.Properties.Resources.resources
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.ProxyVyV.Init.resources
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.GenerateResource.cache
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CoreCompileInputs.cache
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CopyComplete
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.exe
+C:\Users\Jose Luis\source\repos\ProxyVyV\obj\Debug\ProxyVyV.pdb
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\ProxyVyV.exe.config
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\ProxyVyV.exe
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\ProxyVyV.pdb
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\AsyncIO.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\EntityFramework.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\EntityFramework.SqlServer.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\log4net.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\Microsoft.Web.Services3.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\MQTTnet.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\NaCl.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\NetMQ.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\Newtonsoft.Json.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\NLog.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\RestSharp.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Buffers.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Data.SQLite.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Memory.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Numerics.Vectors.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.ValueTuple.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\Transbank.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\AsyncIO.pdb
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\EntityFramework.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\EntityFramework.SqlServer.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\log4net.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\NaCl.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\NetMQ.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\Newtonsoft.Json.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\NLog.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\RestSharp.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Buffers.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Data.SQLite.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Memory.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Numerics.Vectors.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\bin\Debug\System.ValueTuple.xml
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.csprojAssemblyReference.cache
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\Interop.OPOSCONSTANTSLib.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\Interop.OposPOSPrinter_CCO.dll
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.csproj.ResolveComReference.cache
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.Properties.Resources.resources
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.ProxyVyV.Init.resources
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.csproj.GenerateResource.cache
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.csproj.CoreCompileInputs.cache
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.csproj.CopyComplete
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.exe
+C:\Proyectos\ProxyVyVLIPPI\ProxyVyV\obj\Debug\ProxyVyV.pdb
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\ProxyVyV.exe.config
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\ProxyVyV.exe
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\ProxyVyV.pdb
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\AsyncIO.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\EntityFramework.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\EntityFramework.SqlServer.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\log4net.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\Microsoft.Web.Services3.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\MQTTnet.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\NaCl.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\NetMQ.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\NLog.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\RestSharp.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Buffers.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Data.SQLite.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Data.SQLite.EF6.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Data.SQLite.Linq.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Memory.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.ValueTuple.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\Transbank.dll
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\AsyncIO.pdb
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\EntityFramework.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\EntityFramework.SqlServer.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\log4net.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\NaCl.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\NetMQ.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\NLog.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\RestSharp.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Buffers.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Data.SQLite.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Memory.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\bin\Debug\System.ValueTuple.xml
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.csprojAssemblyReference.cache
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.ResolveComReference.cache
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.Properties.Resources.resources
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.ProxyVyV.Init.resources
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.GenerateResource.cache
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CoreCompileInputs.cache
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CopyComplete
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.exe
+C:\RespaldoTrabajoOLD\Respaldo\repos\ProxyVyV\obj\Debug\ProxyVyV.pdb
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\ProxyVyV.exe.config
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\ProxyVyV.exe
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\ProxyVyV.pdb
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\AsyncIO.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\EntityFramework.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\log4net.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\Microsoft.Web.Services3.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\MQTTnet.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\NaCl.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\NetMQ.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\NLog.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\RestSharp.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Buffers.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Memory.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.ValueTuple.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\Transbank.dll
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\AsyncIO.pdb
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\EntityFramework.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\log4net.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\NaCl.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\NetMQ.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\NLog.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\RestSharp.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Buffers.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Memory.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\catap\source\repos\ProxyVyV\bin\Debug\System.ValueTuple.xml
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.AssemblyReference.cache
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.SuggestedBindingRedirects.cache
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.ResolveComReference.cache
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.Properties.Resources.resources
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.ProxyVyV.Init.resources
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.GenerateResource.cache
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CoreCompileInputs.cache
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CopyComplete
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.exe
+C:\Users\catap\source\repos\ProxyVyV\obj\Debug\ProxyVyV.pdb
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\ProxyVyV.exe.config
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\ProxyVyV.exe
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\ProxyVyV.pdb
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\AsyncIO.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\EntityFramework.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\EntityFramework.SqlServer.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\log4net.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\Microsoft.Web.Services3.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\MQTTnet.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\NaCl.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\NetMQ.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\NLog.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\RestSharp.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Buffers.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.EF6.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.Linq.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Memory.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.ValueTuple.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\Transbank.dll
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\AsyncIO.pdb
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\EntityFramework.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\EntityFramework.SqlServer.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\log4net.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\NaCl.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\NetMQ.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\Newtonsoft.Json.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\NLog.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\RestSharp.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Buffers.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Data.SQLite.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Memory.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Numerics.Vectors.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\visualstudio\source\repos\ProxyVyV\bin\Debug\System.ValueTuple.xml
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.AssemblyReference.cache
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.SuggestedBindingRedirects.cache
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.ResolveComReference.cache
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.Properties.Resources.resources
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.ProxyVyV.Init.resources
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.GenerateResource.cache
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CoreCompileInputs.cache
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.csproj.CopyComplete
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.exe
+D:\visualstudio\source\repos\ProxyVyV\obj\Debug\ProxyVyV.pdb

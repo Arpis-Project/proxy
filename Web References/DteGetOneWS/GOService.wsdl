@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:sch="http://ws.services.getone.bcncons.com/" xmlns:tns="http://ws.services.getone.bcncons.com/" targetNamespace="http://ws.services.getone.bcncons.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://ws.services.getone.bcncons.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="processDocumentRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="domain" type="xs:string" />
+            <xs:element name="doctype" type="xs:string" />
+            <xs:element name="id" type="xs:string" />
+            <xs:element minOccurs="0" name="input" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="processDocumentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="vistaPreviaRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="domain" type="xs:string" />
+            <xs:element name="doctype" type="xs:string" />
+            <xs:element minOccurs="0" name="input" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="vistaPreviaResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="processDocumentRequest">
+    <wsdl:part name="processDocumentRequest" element="tns:processDocumentRequest" />
+  </wsdl:message>
+  <wsdl:message name="vistaPreviaRequest">
+    <wsdl:part name="vistaPreviaRequest" element="tns:vistaPreviaRequest" />
+  </wsdl:message>
+  <wsdl:message name="processDocumentResponse">
+    <wsdl:part name="processDocumentResponse" element="tns:processDocumentResponse" />
+  </wsdl:message>
+  <wsdl:message name="vistaPreviaResponse">
+    <wsdl:part name="vistaPreviaResponse" element="tns:vistaPreviaResponse" />
+  </wsdl:message>
+  <wsdl:portType name="GOServicePort">
+    <wsdl:operation name="processDocument">
+      <wsdl:input name="processDocumentRequest" message="tns:processDocumentRequest" />
+      <wsdl:output name="processDocumentResponse" message="tns:processDocumentResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="vistaPrevia">
+      <wsdl:input name="vistaPreviaRequest" message="tns:vistaPreviaRequest" />
+      <wsdl:output name="vistaPreviaResponse" message="tns:vistaPreviaResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GOServicePortSoap11" type="tns:GOServicePort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="processDocument">
+      <soap:operation soapAction="" />
+      <wsdl:input name="processDocumentRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="processDocumentResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="vistaPrevia">
+      <soap:operation soapAction="" />
+      <wsdl:input name="vistaPreviaRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="vistaPreviaResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GOServicePortService">
+    <wsdl:port name="GOServicePortSoap11" binding="tns:GOServicePortSoap11">
+      <soap:address location="http://10.244.229.41:9191/ws/GOService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

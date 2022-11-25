@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Servicio de Integracion, Facturacion Electronica DESIS LTDA.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org">
+      <s:element name="Procesar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="tns:logininfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="file" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="formato" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="logininfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Usuario" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rut" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Clave" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Puerto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IncluyeLink" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ProcesarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProcesarResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerLink">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="tns:logininfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="tpomov" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="folio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cedible" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerLinkResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerLinkResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getBoletaTicket">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="tns:logininfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="ticket" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getBoletaTicketResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getBoletaTicketResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getXMLDte">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="tns:logininfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="tpomov" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="folio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getXMLDteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getXMLDteResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AltNum">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="tns:logininfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="folio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="campo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AltNumResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AltNumResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegIP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="tns:logininfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="puerto" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegIPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegIPResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getIP">
+        <s:complexType />
+      </s:element>
+      <s:element name="getIPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getIPResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EliminarDoc">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="tns:logininfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="tpomov" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="folio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EliminarDocResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EliminarDocResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AnularGuia">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="tns:logininfo" />
+            <s:element minOccurs="0" maxOccurs="1" name="tpomov" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="folio" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tipo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AnularGuiaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AnularGuiaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Online">
+        <s:complexType />
+      </s:element>
+      <s:element name="OnlineResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="OnlineResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Version">
+        <s:complexType />
+      </s:element>
+      <s:element name="VersionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VersionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ProcesarSoapIn">
+    <wsdl:part name="parameters" element="tns:Procesar" />
+  </wsdl:message>
+  <wsdl:message name="ProcesarSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcesarResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerLinkSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerLink" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerLinkSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerLinkResponse" />
+  </wsdl:message>
+  <wsdl:message name="getBoletaTicketSoapIn">
+    <wsdl:part name="parameters" element="tns:getBoletaTicket" />
+  </wsdl:message>
+  <wsdl:message name="getBoletaTicketSoapOut">
+    <wsdl:part name="parameters" element="tns:getBoletaTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="getXMLDteSoapIn">
+    <wsdl:part name="parameters" element="tns:getXMLDte" />
+  </wsdl:message>
+  <wsdl:message name="getXMLDteSoapOut">
+    <wsdl:part name="parameters" element="tns:getXMLDteResponse" />
+  </wsdl:message>
+  <wsdl:message name="AltNumSoapIn">
+    <wsdl:part name="parameters" element="tns:AltNum" />
+  </wsdl:message>
+  <wsdl:message name="AltNumSoapOut">
+    <wsdl:part name="parameters" element="tns:AltNumResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegIPSoapIn">
+    <wsdl:part name="parameters" element="tns:RegIP" />
+  </wsdl:message>
+  <wsdl:message name="RegIPSoapOut">
+    <wsdl:part name="parameters" element="tns:RegIPResponse" />
+  </wsdl:message>
+  <wsdl:message name="getIPSoapIn">
+    <wsdl:part name="parameters" element="tns:getIP" />
+  </wsdl:message>
+  <wsdl:message name="getIPSoapOut">
+    <wsdl:part name="parameters" element="tns:getIPResponse" />
+  </wsdl:message>
+  <wsdl:message name="EliminarDocSoapIn">
+    <wsdl:part name="parameters" element="tns:EliminarDoc" />
+  </wsdl:message>
+  <wsdl:message name="EliminarDocSoapOut">
+    <wsdl:part name="parameters" element="tns:EliminarDocResponse" />
+  </wsdl:message>
+  <wsdl:message name="AnularGuiaSoapIn">
+    <wsdl:part name="parameters" element="tns:AnularGuia" />
+  </wsdl:message>
+  <wsdl:message name="AnularGuiaSoapOut">
+    <wsdl:part name="parameters" element="tns:AnularGuiaResponse" />
+  </wsdl:message>
+  <wsdl:message name="OnlineSoapIn">
+    <wsdl:part name="parameters" element="tns:Online" />
+  </wsdl:message>
+  <wsdl:message name="OnlineSoapOut">
+    <wsdl:part name="parameters" element="tns:OnlineResponse" />
+  </wsdl:message>
+  <wsdl:message name="VersionSoapIn">
+    <wsdl:part name="parameters" element="tns:Version" />
+  </wsdl:message>
+  <wsdl:message name="VersionSoapOut">
+    <wsdl:part name="parameters" element="tns:VersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="getIPHttpGetIn" />
+  <wsdl:message name="getIPHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="OnlineHttpGetIn" />
+  <wsdl:message name="OnlineHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="VersionHttpGetIn" />
+  <wsdl:message name="VersionHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="getIPHttpPostIn" />
+  <wsdl:message name="getIPHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="OnlineHttpPostIn" />
+  <wsdl:message name="OnlineHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="VersionHttpPostIn" />
+  <wsdl:message name="VersionHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="wsplanoSoap">
+    <wsdl:operation name="Procesar">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permite procesar el archivo de integración</wsdl:documentation>
+      <wsdl:input message="tns:ProcesarSoapIn" />
+      <wsdl:output message="tns:ProcesarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerLink">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene el link del documento.</wsdl:documentation>
+      <wsdl:input message="tns:ObtenerLinkSoapIn" />
+      <wsdl:output message="tns:ObtenerLinkSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getBoletaTicket">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene el link de la Boleta Electronica segun el Nro. de TICKET.</wsdl:documentation>
+      <wsdl:input message="tns:getBoletaTicketSoapIn" />
+      <wsdl:output message="tns:getBoletaTicketSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getXMLDte">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene el XML del documento. (SERVICIO ADICIONAL)</wsdl:documentation>
+      <wsdl:input message="tns:getXMLDteSoapIn" />
+      <wsdl:output message="tns:getXMLDteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AltNum">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtiene el numero alternativo del documento (definido por el usuario en un campo adicional)</wsdl:documentation>
+      <wsdl:input message="tns:AltNumSoapIn" />
+      <wsdl:output message="tns:AltNumSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegIP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Registra la IP para un puerto determinado.</wsdl:documentation>
+      <wsdl:input message="tns:RegIPSoapIn" />
+      <wsdl:output message="tns:RegIPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getIP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtener la IP remota del cliente.</wsdl:documentation>
+      <wsdl:input message="tns:getIPSoapIn" />
+      <wsdl:output message="tns:getIPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EliminarDoc">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permite Eliminar un Documento No Electronico en el sistema.</wsdl:documentation>
+      <wsdl:input message="tns:EliminarDocSoapIn" />
+      <wsdl:output message="tns:EliminarDocSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AnularGuia">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Permite Marcar como anulada una Guia de Despacho Electronica en el sistema.</wsdl:documentation>
+      <wsdl:input message="tns:AnularGuiaSoapIn" />
+      <wsdl:output message="tns:AnularGuiaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Online">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Indica el estado del servicio web.</wsdl:documentation>
+      <wsdl:input message="tns:OnlineSoapIn" />
+      <wsdl:output message="tns:OnlineSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Version">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Indica la versión del servicio web.</wsdl:documentation>
+      <wsdl:input message="tns:VersionSoapIn" />
+      <wsdl:output message="tns:VersionSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wsplanoHttpGet">
+    <wsdl:operation name="getIP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtener la IP remota del cliente.</wsdl:documentation>
+      <wsdl:input message="tns:getIPHttpGetIn" />
+      <wsdl:output message="tns:getIPHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Online">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Indica el estado del servicio web.</wsdl:documentation>
+      <wsdl:input message="tns:OnlineHttpGetIn" />
+      <wsdl:output message="tns:OnlineHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Version">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Indica la versión del servicio web.</wsdl:documentation>
+      <wsdl:input message="tns:VersionHttpGetIn" />
+      <wsdl:output message="tns:VersionHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wsplanoHttpPost">
+    <wsdl:operation name="getIP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Obtener la IP remota del cliente.</wsdl:documentation>
+      <wsdl:input message="tns:getIPHttpPostIn" />
+      <wsdl:output message="tns:getIPHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Online">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Indica el estado del servicio web.</wsdl:documentation>
+      <wsdl:input message="tns:OnlineHttpPostIn" />
+      <wsdl:output message="tns:OnlineHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Version">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Indica la versión del servicio web.</wsdl:documentation>
+      <wsdl:input message="tns:VersionHttpPostIn" />
+      <wsdl:output message="tns:VersionHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsplanoSoap" type="tns:wsplanoSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Procesar">
+      <soap:operation soapAction="http://tempuri.org/Procesar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerLink">
+      <soap:operation soapAction="http://tempuri.org/ObtenerLink" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getBoletaTicket">
+      <soap:operation soapAction="http://tempuri.org/getBoletaTicket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getXMLDte">
+      <soap:operation soapAction="http://tempuri.org/getXMLDte" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AltNum">
+      <soap:operation soapAction="http://tempuri.org/AltNum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegIP">
+      <soap:operation soapAction="http://tempuri.org/RegIP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getIP">
+      <soap:operation soapAction="http://tempuri.org/getIP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EliminarDoc">
+      <soap:operation soapAction="http://tempuri.org/EliminarDoc" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnularGuia">
+      <soap:operation soapAction="http://tempuri.org/AnularGuia" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Online">
+      <soap:operation soapAction="http://tempuri.org/Online" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Version">
+      <soap:operation soapAction="http://tempuri.org/Version" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsplanoSoap12" type="tns:wsplanoSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Procesar">
+      <soap12:operation soapAction="http://tempuri.org/Procesar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerLink">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerLink" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getBoletaTicket">
+      <soap12:operation soapAction="http://tempuri.org/getBoletaTicket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getXMLDte">
+      <soap12:operation soapAction="http://tempuri.org/getXMLDte" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AltNum">
+      <soap12:operation soapAction="http://tempuri.org/AltNum" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegIP">
+      <soap12:operation soapAction="http://tempuri.org/RegIP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getIP">
+      <soap12:operation soapAction="http://tempuri.org/getIP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EliminarDoc">
+      <soap12:operation soapAction="http://tempuri.org/EliminarDoc" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnularGuia">
+      <soap12:operation soapAction="http://tempuri.org/AnularGuia" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Online">
+      <soap12:operation soapAction="http://tempuri.org/Online" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Version">
+      <soap12:operation soapAction="http://tempuri.org/Version" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsplanoHttpGet" type="tns:wsplanoHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="getIP">
+      <http:operation location="/getIP" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Online">
+      <http:operation location="/Online" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Version">
+      <http:operation location="/Version" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsplanoHttpPost" type="tns:wsplanoHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="getIP">
+      <http:operation location="/getIP" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Online">
+      <http:operation location="/Online" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Version">
+      <http:operation location="/Version" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsplano">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Servicio de Integracion, Facturacion Electronica DESIS LTDA.</wsdl:documentation>
+    <wsdl:port name="wsplanoSoap" binding="tns:wsplanoSoap">
+      <soap:address location="http://ws.facturacion.cl/WSDS/wsplano.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsplanoSoap12" binding="tns:wsplanoSoap12">
+      <soap12:address location="http://ws.facturacion.cl/WSDS/wsplano.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsplanoHttpGet" binding="tns:wsplanoHttpGet">
+      <http:address location="http://ws.facturacion.cl/WSDS/wsplano.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsplanoHttpPost" binding="tns:wsplanoHttpPost">
+      <http:address location="http://ws.facturacion.cl/WSDS/wsplano.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
