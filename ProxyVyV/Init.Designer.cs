@@ -372,12 +372,21 @@
                                     token = this.doPRISMLoginAux(this.objLog);
                                     str21 = (string)property.Value;
                                     string objVenta = this.GETDocument(str21, token);
-                                    this.objLog.writeDTEVyV("objeto venta "+ objVenta);
+                                    this.objLog.writeDTEVyV("objeto venta " + objVenta);
                                     JObject json = JObject.Parse(this.GETDocument(str21, token));
                                     errors = json.GetValue("errors").ToString();
                                     if (errors == "")
                                     {
                                         JObject json2 = JObject.Parse(json.GetValue("data")[0].ToString());
+
+                                        /*        Obtencion de descunto por Transaccion      */
+                                        string monto_descuento_global = json2.GetValue("discamt").ToString();
+                                        string porc_descuento_global = json2.GetValue("discperc").ToString();
+
+                                        this.objLog.writeDTEVyV("monto_descuento_global " + monto_descuento_global);
+                                        this.objLog.writeDTEVyV("porc_descuento_global " + porc_descuento_global);
+                                        /****************************************************/
+
                                         string idTienda = json2.GetValue("storeno").ToString();
                                         JObject jsonstore = JObject.Parse(this.GETStore(idTienda, token));
                                         JObject store = JObject.Parse(jsonstore.GetValue("data")[0].ToString());
@@ -398,8 +407,8 @@
                                         JArray jsoncustomerRest1 = JArray.Parse(this.GETCustomerRest(idcliente, token));
                                         JObject jsoncustomerRest = JObject.Parse(jsoncustomerRest1[0].ToString());
                                         this.objLog.write("pase conversion a json de cliente");
-                                       // JObject jsoncustomer = JObject.Parse(this.GETCustomer(idcliente, token));
-                                       // JObject jsoncustomer2 = JObject.Parse(jsoncustomer.GetValue("data")[0].ToString());
+                                        // JObject jsoncustomer = JObject.Parse(this.GETCustomer(idcliente, token));
+                                        // JObject jsoncustomer2 = JObject.Parse(jsoncustomer.GetValue("data")[0].ToString());
                                         numdoccliente = jsoncustomerRest.GetValue("info1").ToString().ToUpper();
                                         //this.objLog.write("genere el cliente");
                                         if (numdoccliente == "")
@@ -426,7 +435,7 @@
                                                 plant = plant.Replace("#RUTEMISOR#", DTEVyV_RutEmisor);
                                                 plant = plant.Replace("#RUTENVIA#", DTEVyV_RutEmisor);
                                                 plant = plant.Replace("#RUTRECEPTOR#", numdoccliente);
-                                                DTEValidaciones(numdoccliente, "Rut Receptor", 10,1);
+                                                DTEValidaciones(numdoccliente, "Rut Receptor", 10, 1);
                                                 plant = plant.Replace("#FECHARESOL#", this.ParamValues.DTEVyV_FechaResol);
                                                 plant = plant.Replace("#NUMRESOL#", this.ParamValues.DTEVyV_NumResol);
                                                 plant = plant.Replace("#FIRMAEVN#", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Replace(" ", "T"));
@@ -438,7 +447,7 @@
                                                 //EMISOR
                                                 plant = plant.Replace("#RZNSOC#", DTEVyV_RznSocEmi);
                                                 DTEValidaciones(DTEVyV_RznSocEmi, "Razon Social Emisor", 100, 1);
-                                                plant = plant.Replace("#GIRO#", LargoCadenaMax(DTEVyV_Giro,80));
+                                                plant = plant.Replace("#GIRO#", LargoCadenaMax(DTEVyV_Giro, 80));
                                                 DTEValidaciones(LargoCadenaMax(DTEVyV_Giro, 80), "Giro Emisor", 80, 1);
                                                 //plant = plant.Replace("#ACTECO#", this.ParamValues.DTEVyV_ACTECO);
                                                 plant = plant.Replace("#CDGSIISUCUR#", DTEVyV_codigo_sii_sucursal);
@@ -451,7 +460,7 @@
                                                 if (nombrecliente == "")
                                                 {
                                                     plant = plant.Replace("#RZNSOCRECEP#", this.ParamValues.DTEVyV_NombreClientedefault);
-                                                    DTEValidaciones(this.ParamValues.DTEVyV_NombreClientedefault, "Razón Social Receptor", 100,1);
+                                                    DTEValidaciones(this.ParamValues.DTEVyV_NombreClientedefault, "Razón Social Receptor", 100, 1);
                                                 }
                                                 else
                                                 {
@@ -468,7 +477,7 @@
                                                     plant = plant.Replace("#MNTEXE#", "");
                                                     plant = plant.Replace("#IVA#", "");
                                                     plant = plant.Replace("#MNTTOTAL#", "1");
-                                                    plant = plant.Replace("#MNTNETO#","1");
+                                                    plant = plant.Replace("#MNTNETO#", "1");
                                                 }
                                                 else
                                                 {
@@ -478,7 +487,7 @@
                                                     decimal var_returnsubtotal = Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString());
 
                                                     plant = plant.Replace("#MNTEXE#", "<MntExe>0</MntExe>");
-                                                    plant = plant.Replace("#IVA#", "<IVA>"+Decimal.Round(var_saletotaltaxamt - var_returntax1amt).ToString()+ "</IVA>");
+                                                    plant = plant.Replace("#IVA#", "<IVA>" + Decimal.Round(var_saletotaltaxamt - var_returntax1amt).ToString() + "</IVA>");
                                                     DTEValidaciones(Decimal.Round(var_saletotaltaxamt - var_returntax1amt).ToString(), "IVA", 18, 1);
                                                     plant = plant.Replace("#MNTTOTAL#", Decimal.Round(var_saletotalamt - var_returnsubtotal).ToString());
                                                     DTEValidaciones(Decimal.Round(var_saletotalamt - var_returnsubtotal).ToString(), "Monto Total", 18, 1);
@@ -531,20 +540,34 @@
                                                                 cantidad = cantidad.Replace(',', '.');
                                                                 plantdet = plantdet.Replace("#QTYITEM#", cantidad);
                                                                 plantdet = plantdet.Replace("#UNMDITEM#", "Un.");
-                                                                plantdet = plantdet.Replace("#PRCITEM#", Decimal.Round(Convert.ToDecimal((jsonOperaciones["origprice"]).ToString())).ToString());
-                                                                DTEValidaciones(Decimal.Round(Convert.ToDecimal((jsonOperaciones["origprice"]).ToString())).ToString(), "Precio Item", 19, 2);
-                                                                string iva = (jsonOperaciones["taxamt"]).ToString().Split(',')[0];
+                                                                string iva = (jsonOperaciones["taxamt"]).ToString();
                                                                 string precio = Decimal.Round(Convert.ToDecimal((jsonOperaciones["price"]).ToString())).ToString();
                                                                 //int montoitem = ((Int32.Parse(precio) * Int32.Parse(cantidad)) - (Int32.Parse(iva) * Int32.Parse(cantidad)));
                                                                 string cantidad_decimal = cantidad.Replace(".", ",");
-                                                                double montoitem = (Int32.Parse(precio) * Convert.ToDouble(cantidad_decimal));
+                                                                double montoitem = (Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal));
+                                                                if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
+                                                                {
+                                                                    precio = Math.Round(Convert.ToDouble(precio) - Convert.ToDouble(precio) * (Convert.ToDouble(porc_descuento_global) / 100)).ToString();
+                                                                    montoitem = (Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal));
+
+                                                                }
+
+                                                                plantdet = plantdet.Replace("#PRCITEM#", precio);
+                                                                DTEValidaciones(Decimal.Round(Convert.ToDecimal((precio).ToString())).ToString(), "Precio Item", 19, 2);
                                                                 plantdet = plantdet.Replace("#MONTOITEM#", Decimal.Round(Convert.ToDecimal(montoitem.ToString())).ToString());
+
                                                                 try
                                                                 {
                                                                     descuento = Decimal.Round(Convert.ToDecimal((jsonOperaciones["discamt"]).ToString())).ToString();
+
                                                                     if (descuento != string.Empty && descuento != "0")
                                                                     {
                                                                         decimal descuento_decimal = Convert.ToDecimal(descuento);
+                                                                        if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
+                                                                        {
+                                                                            descuento_decimal = Math.Round(descuento_decimal + (descuento_decimal * (Convert.ToDecimal(porc_descuento_global) / 100)));
+                                                                        }
+
                                                                         if (descuento_decimal < 0)
                                                                         {
                                                                             descuento_decimal = descuento_decimal * -1;
@@ -577,8 +600,8 @@
                                                 }
                                                 plant = plant.Replace("#DETALLE#", plantdet);
                                                 //agregar referencia de cliente cuando tenga correo.
-                                               
-                                                if(Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString()) > 0)
+
+                                                if (Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString()) > 0)
                                                 {
                                                     decimal descuentoFinal = Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString());
                                                     if (aplicaDcto1Peso)
@@ -586,12 +609,12 @@
                                                         descuentoFinal = descuentoFinal - 1;
                                                     }
 
-                                                    plant = plant.Replace("#DCT_GLOBAL#", "<DscRcgGlobal>"+
-                                                                                          "<NroLinDR>1</NroLinDR>"+
-                                                                                          "<TpoMov>D</TpoMov>"+
-                                                                                          "<GlosaDR>descuento devolucion</GlosaDR>"+
-                                                                                          "<TpoValor>$</TpoValor>"+
-                                                                                          "<ValorDR>"+ descuentoFinal + "</ValorDR>"+
+                                                    plant = plant.Replace("#DCT_GLOBAL#", "<DscRcgGlobal>" +
+                                                                                          "<NroLinDR>1</NroLinDR>" +
+                                                                                          "<TpoMov>D</TpoMov>" +
+                                                                                          "<GlosaDR>descuento devolucion</GlosaDR>" +
+                                                                                          "<TpoValor>$</TpoValor>" +
+                                                                                          "<ValorDR>" + descuentoFinal + "</ValorDR>" +
                                                                                           "</DscRcgGlobal> ");
                                                 }
                                                 else
@@ -601,10 +624,10 @@
 
                                                 #endregion
                                                 #region Folio
-                                                this.objLog.writeDTEVyV("Solicitando Folio  " + DTEVyV_RutEmisor + "tipo_doc "+ posflag);
+                                                this.objLog.writeDTEVyV("Solicitando Folio  " + DTEVyV_RutEmisor + "tipo_doc " + posflag);
                                                 folio = this.DTESolicitarFolio(DTEVyV_RutEmisor, posflag);
                                                 this.objLog.writeDTEVyV("Folio Obtenido  " + folio);
-                                                if (folio == "0" )
+                                                if (folio == "0")
                                                 {
                                                     //this.objLog.write(folio);
                                                     flag2 = false;
@@ -629,7 +652,7 @@
                                                     //this.objLog.writeDTEVyV("Enviando XML al DTE");
                                                     boletapdf = this.DTESolicitaBoleta(plant, ref status, ref msg, ref xmlres);
                                                     this.objLog.writeDTEVyV("status DTE " + status);
-                                                    this.objLog.writeDTEVyV("respuesta DTE "+ msg);
+                                                    this.objLog.writeDTEVyV("respuesta DTE " + msg);
 
                                                     if (status == "0" || status == "4")
                                                     {
@@ -638,12 +661,12 @@
                                                         this.objLog.writeDTEVyV(xmlres);
                                                         ted = retornaTED(xmlres);
                                                         tedbase64 = EncodeStrToBase64(ted);
-                                                        if(status == "4")
+                                                        if (status == "4")
                                                         {
                                                             status = "0";
                                                             msg = "Error al generar el PDF";
                                                         }
-                                                        
+
 
 
                                                         string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + msg + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}" };
@@ -672,201 +695,222 @@
                                             }
                                         }
                                         else if (posflag == "33")// FACTURA ELECTRONICA
-                                            {
+                                        {
                                             //posflagtipo = "FACTURA ELECTRONICA";},
                                             this.objLog.writeDTEVyV("Procesando Factura");
                                             try
+                                            {
+                                                #region PROCESO FACTURA ELECTRONICA
+                                                plantilla = new PlantillaXml();
+                                                plant = this.plantilla.PantillaCabFactura();
+                                                #region Creacion de XML Cabecera
+                                                //this.objLog.write("llegue al documento");
+                                                //DOCUMENTO
+                                                //plant = plant.Replace("#DOCUMENTOID#", "R" + this.ParamValues.DTEVyV_RutEmisor + "T" + posflag + "F" + folio);
+                                                plant = plant.Replace("#TPODTE#", posflag);
+                                                //plant = plant.Replace("#FOLIO#", folio);
+                                                plant = plant.Replace("#FECEMISION#", DateTime.Now.ToString("yyyy-MM-dd"));
+                                                plant = plant.Replace("#FECVENC#", DateTime.Now.ToString("yyyy-MM-dd"));
+                                                //this.objLog.write("llegue al emisor");
+                                                //EMISOR
+                                                plant = plant.Replace("#RUTEMISOR#", DTEVyV_RutEmisor);
+                                                plant = plant.Replace("#RZNSOC#", DTEVyV_RznSocEmi);
+                                                DTEValidaciones(DTEVyV_RznSocEmi, "Razon Social Emisor", 100, 1);
+                                                plant = plant.Replace("#GIRO#", LargoCadenaMax(DTEVyV_Giro, 80));
+                                                DTEValidaciones(LargoCadenaMax(DTEVyV_Giro, 80), "Giro Emisor", 80, 1);
+                                                plant = plant.Replace("#ACTECO#", this.ParamValues.DTEVyV_ACTECO);
+                                                plant = plant.Replace("#CDGSIISUCUR#", DTEVyV_codigo_sii_sucursal);
+                                                DTEValidaciones(DTEVyV_codigo_sii_sucursal, "Sucursal Emisor", 20, 1);
+                                                plant = plant.Replace("#DIRORIGEN#", DTEVyV_DirOrigen);
+                                                plant = plant.Replace("#CMNAORIGEN#", DTEVyV_CmnaOrigen);
+                                                plant = plant.Replace("#CIUDADORIGEN#", DTEVyV_CiudadOrigen);
+                                                this.objLog.write("llegue al receptor");
+                                                //RECEPTOR
+
+                                                plant = plant.Replace("#RUTRECEPTOR#", numdoccliente);
+                                                DTEValidaciones(numdoccliente, "Rut Receptor", 10, 1);
+                                                string nombrecliente = jsoncustomerRest.GetValue("first_name").ToString() + " " + jsoncustomerRest.GetValue("last_name").ToString();
+                                                if (nombrecliente == "")
                                                 {
-                                                    #region PROCESO FACTURA ELECTRONICA
-                                                    plantilla = new PlantillaXml();
-                                                    plant = this.plantilla.PantillaCabFactura();
-                                                    #region Creacion de XML Cabecera
-                                                    //this.objLog.write("llegue al documento");
-                                                    //DOCUMENTO
-                                                    //plant = plant.Replace("#DOCUMENTOID#", "R" + this.ParamValues.DTEVyV_RutEmisor + "T" + posflag + "F" + folio);
-                                                    plant = plant.Replace("#TPODTE#", posflag);
-                                                    //plant = plant.Replace("#FOLIO#", folio);
-                                                    plant = plant.Replace("#FECEMISION#", DateTime.Now.ToString("yyyy-MM-dd"));
-                                                    plant = plant.Replace("#FECVENC#", DateTime.Now.ToString("yyyy-MM-dd"));
-                                                    //this.objLog.write("llegue al emisor");
-                                                    //EMISOR
-                                                    plant = plant.Replace("#RUTEMISOR#", DTEVyV_RutEmisor);
-                                                    plant = plant.Replace("#RZNSOC#", DTEVyV_RznSocEmi);
-                                                    DTEValidaciones(DTEVyV_RznSocEmi, "Razon Social Emisor", 100, 1);
-                                                    plant = plant.Replace("#GIRO#", LargoCadenaMax(DTEVyV_Giro, 80));
-                                                    DTEValidaciones(LargoCadenaMax(DTEVyV_Giro, 80), "Giro Emisor", 80, 1);
-                                                    plant = plant.Replace("#ACTECO#", this.ParamValues.DTEVyV_ACTECO);
-                                                    plant = plant.Replace("#CDGSIISUCUR#", DTEVyV_codigo_sii_sucursal);
-                                                    DTEValidaciones(DTEVyV_codigo_sii_sucursal, "Sucursal Emisor", 20, 1);
-                                                    plant = plant.Replace("#DIRORIGEN#", DTEVyV_DirOrigen);
-                                                    plant = plant.Replace("#CMNAORIGEN#", DTEVyV_CmnaOrigen);
-                                                    plant = plant.Replace("#CIUDADORIGEN#", DTEVyV_CiudadOrigen);
-                                                    //this.objLog.write("llegue al receptor");
-                                                    //RECEPTOR
-                                                    plant = plant.Replace("#RUTRECEPTOR#", numdoccliente);
-                                                    DTEValidaciones(numdoccliente, "Rut Receptor", 10, 1);
-                                                    string nombrecliente = jsoncustomerRest.GetValue("first_name").ToString() + " " + jsoncustomerRest.GetValue("last_name").ToString();
-                                                    if (nombrecliente == "")
+                                                    plant = plant.Replace("#RZNSOCRECEP#", this.ParamValues.DTEVyV_NombreClientedefault);
+                                                    DTEValidaciones(this.ParamValues.DTEVyV_NombreClientedefault, "Razon Social Receptor", 100, 1);
+                                                }
+                                                else
+                                                {
+                                                    plant = plant.Replace("#RZNSOCRECEP#", nombrecliente);
+                                                    DTEValidaciones(nombrecliente, "Razon Social Receptor", 100, 2);
+                                                }
+                                                //this.objLog.write("busco el giro");
+                                                //this.objLog.write(jsoncustomer2.ToString());
+                                                string giro = jsoncustomerRest.GetValue("notes").ToString();
+                                                if (giro == "")
+                                                {
+                                                    //this.objLog.write("entre en 1");
+                                                    plant = plant.Replace("#GIRORECEP#", LargoCadenaMax(this.ParamValues.DTEVyV_GiroClientedefault, 40));
+                                                    DTEValidaciones(LargoCadenaMax(this.ParamValues.DTEVyV_GiroClientedefault, 40), "Giro Receptor", 40, 1);
+                                                }
+                                                else
+                                                {
+                                                    //this.objLog.write("entre en 2");
+                                                    plant = plant.Replace("#GIRORECEP#", LargoCadenaMax(giro, 40));
+                                                    DTEValidaciones(LargoCadenaMax(giro, 40), "Giro Receptor", 40, 2);
+                                                }
+                                                this.objLog.write("sali del giro");
+                                                plant = plant.Replace("#DIRRECEP#", jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString());
+                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Dirección Receptor", 70, 2);
+                                                plant = plant.Replace("#CMNARECEP#", jsoncustomerRest.GetValue("primary_address_line_4").ToString());
+                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_4").ToString(), "Comuna Receptor", 20, 1);
+                                                plant = plant.Replace("#CIUDADRECEP#", jsoncustomerRest.GetValue("primary_address_line_5").ToString());
+                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_5").ToString(), "Ciudad Receptor", 20, 1);
+                                                this.objLog.write("llegue a los totales");
+                                                //TOTALES
+                                                //el monto neto se calculara en base a la sumatario de cada Item
+                                                // int neto = Int32.Parse(json2.GetValue("saletotalamt").ToString()) - Int32.Parse(json2.GetValue("saletotaltaxamt").ToString());
+                                                // plant = plant.Replace("#MNTNETO#", neto.ToString());
+                                                // DTEValidaciones(neto.ToString(), "Monto Neto", 18, 3);
+                                                plant = plant.Replace("#MNTEXE#", "0");
+                                                plant = plant.Replace("#TASAIVA#", this.ParamValues.DTEVyV_TasaIVA);
+                                                DTEValidaciones(this.ParamValues.DTEVyV_TasaIVA, "Tasa IVA", 6, 3);
+                                                plant = plant.Replace("#IVA#", json2.GetValue("saletotaltaxamt").ToString());
+                                                DTEValidaciones(json2.GetValue("saletotaltaxamt").ToString(), "IVA", 18, 3);
+                                                plant = plant.Replace("#MNTTOTAL#", json2.GetValue("saletotalamt").ToString());
+                                                DTEValidaciones(json2.GetValue("saletotalamt").ToString(), "Monto Total", 18, 3);
+                                                //this.objLog.write("sali del total");
+                                                #endregion
+                                                #region Creacion Xml Detalle
+                                                string strjson3 = json2.GetValue("docitem").ToString();
+                                                JArray jsonArray = JArray.Parse(strjson3);
+                                                //this.objLog.write("entrare al detalle");
+                                                Decimal monto_neto_suma_detalle = 0;
+                                                foreach (JObject jsonOperaciones in jsonArray.Children<JObject>())
+                                                {
+                                                    if (contadordetalle < 41)
                                                     {
-                                                        plant = plant.Replace("#RZNSOCRECEP#", this.ParamValues.DTEVyV_NombreClientedefault);
-                                                        DTEValidaciones(this.ParamValues.DTEVyV_NombreClientedefault, "Razon Social Receptor", 100, 1);
-                                                    }
-                                                    else
-                                                    {
-                                                        plant = plant.Replace("#RZNSOCRECEP#", nombrecliente);
-                                                        DTEValidaciones(nombrecliente, "Razon Social Receptor",100, 2);
-                                                    }
-                                                    //this.objLog.write("busco el giro");
-                                                    //this.objLog.write(jsoncustomer2.ToString());
-                                                    string giro = jsoncustomerRest.GetValue("notes").ToString();
-                                                    if (giro == "")
-                                                    {
-                                                        //this.objLog.write("entre en 1");
-                                                        plant = plant.Replace("#GIRORECEP#", LargoCadenaMax(this.ParamValues.DTEVyV_GiroClientedefault,40));
-                                                        DTEValidaciones(LargoCadenaMax(this.ParamValues.DTEVyV_GiroClientedefault, 40), "Giro Receptor", 40, 1);
-                                                    }
-                                                    else
-                                                    {
-                                                        //this.objLog.write("entre en 2");
-                                                        plant = plant.Replace("#GIRORECEP#", LargoCadenaMax(giro, 40));
-                                                        DTEValidaciones(LargoCadenaMax(giro, 40), "Giro Receptor", 40, 2);
-                                                    }
-                                                    //this.objLog.write("sali del giro");
-                                                    plant = plant.Replace("#DIRRECEP#", jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString());
-                                                    DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Dirección Receptor", 70, 2);
-                                                    plant = plant.Replace("#CMNARECEP#", jsoncustomerRest.GetValue("primary_address_line_4").ToString());
-                                                    DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_4").ToString(), "Comuna Receptor", 20, 1);
-                                                    plant = plant.Replace("#CIUDADRECEP#", jsoncustomerRest.GetValue("primary_address_line_5").ToString());
-                                                    DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_5").ToString(), "Ciudad Receptor", 20, 1);
-                                                    //this.objLog.write("llegue a los totales");
-                                                    //TOTALES
-                                                   //el monto neto se calculara en base a la sumatario de cada Item
-                                                   // int neto = Int32.Parse(json2.GetValue("saletotalamt").ToString()) - Int32.Parse(json2.GetValue("saletotaltaxamt").ToString());
-                                                   // plant = plant.Replace("#MNTNETO#", neto.ToString());
-                                                  // DTEValidaciones(neto.ToString(), "Monto Neto", 18, 3);
-                                                    plant = plant.Replace("#MNTEXE#", "0");
-                                                    plant = plant.Replace("#TASAIVA#", this.ParamValues.DTEVyV_TasaIVA);
-                                                    DTEValidaciones(this.ParamValues.DTEVyV_TasaIVA, "Tasa IVA", 6, 3);
-                                                    plant = plant.Replace("#IVA#", json2.GetValue("saletotaltaxamt").ToString());
-                                                    DTEValidaciones(json2.GetValue("saletotaltaxamt").ToString(), "IVA", 18, 3);
-                                                    plant = plant.Replace("#MNTTOTAL#", json2.GetValue("saletotalamt").ToString());
-                                                    DTEValidaciones(json2.GetValue("saletotalamt").ToString(), "Monto Total", 18, 3);
-                                                    //this.objLog.write("sali del total");
-                                                    #endregion
-                                                    #region Creacion Xml Detalle
-                                                    string strjson3 = json2.GetValue("docitem").ToString();
-                                                    JArray jsonArray = JArray.Parse(strjson3);
-                                                    //this.objLog.write("entrare al detalle");
-                                                    Decimal monto_neto_suma_detalle = 0;
-                                                    foreach (JObject jsonOperaciones in jsonArray.Children<JObject>())
-                                                    {
-                                                        if (contadordetalle < 41)
+                                                        string kitflag = "0";
+                                                        try
                                                         {
-                                                            string kitflag = "0";
+                                                            kitflag = (jsonOperaciones["kitflag"]).ToString();
+                                                        }
+                                                        catch (Exception e)
+                                                        {
+                                                            kitflag = "0";
+                                                        }
+                                                        if (!"5".Equals(kitflag))
+                                                        {
+                                                            string descuento = string.Empty;
+                                                            plantilla = new PlantillaXml();
+                                                            plantdet = plantdet + this.plantilla.PantillaDetFactura();
+                                                            plantdet = plantdet.Replace("#NROLINDET#", (jsonOperaciones["itempos"]).ToString());
+                                                            plantdet = plantdet.Replace("#TPOCODIGO#", "INTERNO");
+                                                            plantdet = plantdet.Replace("#VLRCODIGO#", (jsonOperaciones["alu"]).ToString());
+                                                            DTEValidaciones(jsonOperaciones["alu"].ToString(), "Código Item", 35, 1);
+                                                            plantdet = plantdet.Replace("#NMBITEM#", (jsonOperaciones["description1"]).ToString());
+                                                            DTEValidaciones(jsonOperaciones["description1"].ToString(), "Nombre Item", 70, 1);
+                                                            plantdet = plantdet.Replace("#DESC#", (jsonOperaciones["description1"]).ToString());
+                                                            string cantidad = (jsonOperaciones["qty"]).ToString();
+                                                            cantidad = cantidad.Replace(',', '.');
+                                                            plantdet = plantdet.Replace("#QTYITEM#", cantidad);
+                                                            string iva = (jsonOperaciones["taxamt"]).ToString();
+                                                            string precio = (jsonOperaciones["price"]).ToString();
+                                                            string precioori = (jsonOperaciones["origprice"]).ToString();
+                                                            Double preciosiniva = Math.Round(Convert.ToDouble(precioori) - Convert.ToDouble(iva));
+                                                            string cantidad_decimal = cantidad.Replace(".", ",");
+                                                            double montoitem = ((Int32.Parse(precio) * Convert.ToDouble(cantidad_decimal)) - (Convert.ToDouble(iva) * Convert.ToDouble(cantidad_decimal)));
+
+                                                            if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
+                                                            {
+
+                                                                preciosiniva = Math.Round(preciosiniva - (preciosiniva * (Convert.ToDouble(porc_descuento_global) / 100)));
+                                                                montoitem = Math.Round((preciosiniva * Convert.ToDouble(cantidad_decimal)));
+                                                            }
+
+
+
+                                                            monto_neto_suma_detalle = monto_neto_suma_detalle + Decimal.Round(Convert.ToDecimal(montoitem.ToString()));
+
+                                                            plantdet = plantdet.Replace("#MONTOITEM#", Decimal.Round(Convert.ToDecimal(montoitem.ToString())).ToString());
+                                                            plantdet = plantdet.Replace("#PRCITEM#", preciosiniva.ToString());
+                                                            DTEValidaciones(preciosiniva.ToString(), "Precio Item", 19, 2);
+
+                                                            this.objLog.write("CALCULO 5 --> " + preciosiniva);
+
+
                                                             try
                                                             {
-                                                                kitflag = (jsonOperaciones["kitflag"]).ToString();
-                                                            }
-                                                            catch (Exception e)
-                                                            {
-                                                                kitflag = "0";
-                                                            }
-                                                             if (!"5".Equals(kitflag))
-                                                            {
-                                                                string descuento = string.Empty;
-                                                                plantilla = new PlantillaXml();
-                                                                plantdet = plantdet + this.plantilla.PantillaDetFactura();
-                                                                plantdet = plantdet.Replace("#NROLINDET#", (jsonOperaciones["itempos"]).ToString());
-                                                                plantdet = plantdet.Replace("#TPOCODIGO#", "INTERNO");
-                                                                plantdet = plantdet.Replace("#VLRCODIGO#", (jsonOperaciones["alu"]).ToString());
-                                                                DTEValidaciones(jsonOperaciones["alu"].ToString(), "Código Item", 35, 1);
-                                                                plantdet = plantdet.Replace("#NMBITEM#", (jsonOperaciones["description1"]).ToString());
-                                                                DTEValidaciones(jsonOperaciones["description1"].ToString(), "Nombre Item", 70, 1);
-                                                                plantdet = plantdet.Replace("#DESC#", (jsonOperaciones["description1"]).ToString());
-                                                                string cantidad = (jsonOperaciones["qty"]).ToString();
-                                                                cantidad = cantidad.Replace(',', '.');
-                                                                plantdet = plantdet.Replace("#QTYITEM#", cantidad);
-                                                                string iva = (jsonOperaciones["taxamt"]).ToString();
-                                                                string precio = (jsonOperaciones["price"]).ToString();
-                                                                string cantidad_decimal = cantidad.Replace(".", ",");
-                                                                double montoitem = ((Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal)) - (Convert.ToDouble(iva) * Convert.ToDouble(cantidad_decimal)));
-                                                                plantdet = plantdet.Replace("#MONTOITEM#", Decimal.Round(Convert.ToDecimal(montoitem.ToString())).ToString());
-                                                                monto_neto_suma_detalle = monto_neto_suma_detalle + Decimal.Round(Convert.ToDecimal(montoitem.ToString()));
-                                                                string precioori = (jsonOperaciones["origprice"]).ToString();
-                                                                decimal preciosiniva = (Convert.ToDecimal(precioori) - Convert.ToDecimal(iva));
-                                                                plantdet = plantdet.Replace("#PRCITEM#", Decimal.Round(preciosiniva).ToString());
-                                                                DTEValidaciones(preciosiniva.ToString(), "Precio Item", 19, 2);
-                                                                try
+                                                                descuento = (jsonOperaciones["discamt"]).ToString();
+                                                                if (descuento != string.Empty && descuento != "0")
                                                                 {
-                                                                    descuento = (jsonOperaciones["discamt"]).ToString();
-                                                                    if (descuento != string.Empty && descuento != "0")
+                                                                    decimal descuento_decimal = Convert.ToDecimal(descuento);
+                                                                    if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
                                                                     {
-                                                                        decimal descuento_decimal = Convert.ToDecimal(descuento);
-                                                                        if (descuento_decimal < 0)
-                                                                        {
-                                                                            descuento_decimal = descuento_decimal * -1;
-                                                                            descuento = descuento_decimal.ToString();
-                                                                        }
-
-                                                                        int desc = Int32.Parse(descuento) - ((Int32.Parse(descuento) * Int32.Parse(this.ParamValues.DTEVyV_TasaIVA)) / 100);
-                                                                        descuento = "<DescuentoMonto>" + desc.ToString() + "</DescuentoMonto></Detalle>";
-                                                                        plantdet = plantdet.Replace("#DESCUENTO#", descuento);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        descuento = "</Detalle>";
-                                                                        plantdet = plantdet.Replace("#DESCUENTO#", descuento);
+                                                                        descuento_decimal = Math.Round(descuento_decimal + (descuento_decimal * Convert.ToDecimal(porc_descuento_global)));
                                                                     }
 
+                                                                    if (descuento_decimal < 0)
+                                                                    {
+                                                                        descuento_decimal = descuento_decimal * -1;
+                                                                        descuento = descuento_decimal.ToString();
+                                                                    }
+
+                                                                    int desc = Int32.Parse(descuento) - ((Int32.Parse(descuento) * Int32.Parse(this.ParamValues.DTEVyV_TasaIVA)) / 100);
+                                                                    descuento = "<DescuentoMonto>" + desc.ToString() + "</DescuentoMonto></Detalle>";
+                                                                    plantdet = plantdet.Replace("#DESCUENTO#", descuento);
                                                                 }
-                                                                catch
+                                                                else
                                                                 {
                                                                     descuento = "</Detalle>";
                                                                     plantdet = plantdet.Replace("#DESCUENTO#", descuento);
                                                                 }
-                                                                 contadordetalle = contadordetalle + 1;
+
                                                             }
-                                                        }
-                                                        else
-                                                        {
-                                                            msg = "No es posible superar los 40 Items";
-                                                            throw new ApplicationException(msg);
+                                                            catch
+                                                            {
+                                                                descuento = "</Detalle>";
+                                                                plantdet = plantdet.Replace("#DESCUENTO#", descuento);
+                                                            }
+                                                            contadordetalle = contadordetalle + 1;
                                                         }
                                                     }
+                                                    else
+                                                    {
+                                                        msg = "No es posible superar los 40 Items";
+                                                        throw new ApplicationException(msg);
+                                                    }
+                                                }
 
-                                                    int neto = Int32.Parse(monto_neto_suma_detalle.ToString());
-                                                    plant = plant.Replace("#MNTNETO#", neto.ToString());
-                                                    DTEValidaciones(neto.ToString(), "Monto Neto", 18, 3);
+                                                int neto = Int32.Parse(monto_neto_suma_detalle.ToString());
+                                                plant = plant.Replace("#MNTNETO#", neto.ToString());
+                                                DTEValidaciones(neto.ToString(), "Monto Neto", 18, 3);
 
                                                 plant = plant.Replace("#DETALLE#", plantdet);
-                                                    #endregion,
-                                                    #region Creacion Xml Referencia
-                                                    //string strjson4 = json2.GetValue("docitem").ToString(); //cambiar x referencia
-                                                    //JArray jsonArray1 = JArray.Parse(strjson4);
-                                                    //foreach (JObject jsonOperaciones in jsonArray1.Children<JObject>())
-                                                    //{
-                                                    plantilla = new PlantillaXml();
-                                                    plantref = string.Empty;
-                                                    string email = json2.GetValue("btemail").ToString();
-                                                    if (string.IsNullOrEmpty(email))
-                                                    {
-                                                        email = "1";
-                                                    }
-                                                    plantref = plantref + this.plantilla.PlantillaRefFactura();
-                                                    plantref = plantref.Replace("#NROLINREF#", "1");
-                                                    plantref = plantref.Replace("#TPODOCREF#", "MTO");
-                                                    //  plantref = plantref.Replace("#FOLIOREF#", folio); el folio se reemplaza mas abajo
-                                                    plantref = plantref.Replace("#FCHREF#", DateTime.Now.ToString("yyyy-MM-dd"));
-                                                    plantref = plantref.Replace("#RAZONREF#", email);
-                                                    //DTEValidaciones(json2.GetValue("btemail").ToString(), "Razon Referencia", 90, 2);
-                                                    //}
+                                                #endregion,
+                                                #region Creacion Xml Referencia
+                                                //string strjson4 = json2.GetValue("docitem").ToString(); //cambiar x referencia
+                                                //JArray jsonArray1 = JArray.Parse(strjson4);
+                                                //foreach (JObject jsonOperaciones in jsonArray1.Children<JObject>())
+                                                //{
+                                                plantilla = new PlantillaXml();
+                                                plantref = string.Empty;
+                                                string email = json2.GetValue("btemail").ToString();
+                                                if (string.IsNullOrEmpty(email))
+                                                {
+                                                    email = "1";
+                                                }
+                                                plantref = plantref + this.plantilla.PlantillaRefFactura();
+                                                plantref = plantref.Replace("#NROLINREF#", "1");
+                                                plantref = plantref.Replace("#TPODOCREF#", "MTO");
+                                                //  plantref = plantref.Replace("#FOLIOREF#", folio); el folio se reemplaza mas abajo
+                                                plantref = plantref.Replace("#FCHREF#", DateTime.Now.ToString("yyyy-MM-dd"));
+                                                plantref = plantref.Replace("#RAZONREF#", email);
+                                                //DTEValidaciones(json2.GetValue("btemail").ToString(), "Razon Referencia", 90, 2);
+                                                //}
                                                 plant = plant.Replace("#REFERENCIA#", plantref);
                                                 #endregion
                                                 #region Folio
 
-                                               // this.objLog.writeDTEVyV("Solicitando Folio");
+                                                // this.objLog.writeDTEVyV("Solicitando Folio");
                                                 folio = this.DTESolicitarFolio(DTEVyV_RutEmisor, posflag);
-                                                this.objLog.writeDTEVyV("Solicitando Obtenido "+ folio);
+                                                this.objLog.writeDTEVyV("Solicitando Obtenido " + folio);
                                                 if (folio == "0")
                                                 {
                                                     //this.objLog.write(folio);
@@ -916,81 +960,81 @@
                                                         this.objLog.write("ProcessEvent** Error: " + "Estatus fuera de rango" + msg);
                                                     }
                                                 }
-                                                    #endregion
-                                                }
-                                                catch (Exception e)
-                                                {
-                                                    flag2 = false;
-                                                    num = 200;
-                                                    status = "555";
-                                                    this.objLog.write("EXCEPTION2");
-                                                    str = "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + e.Message + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}";
-                                                    this.objLog.write("ProcessEvent *********** Error General -- " + e.Message);
-                                                    this.txtMensaje.Text = this.txtMensaje.Text + "\nExcepcion: " + e.Message;
-                                                }
+                                                #endregion
                                             }
-                                        else if (posflag == "61")// NOTA DE CREDITO ELECTRONICA
+                                            catch (Exception e)
                                             {
+                                                flag2 = false;
+                                                num = 200;
+                                                status = "555";
+                                                this.objLog.write("EXCEPTION2");
+                                                str = "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + e.Message + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}";
+                                                this.objLog.write("ProcessEvent *********** Error General -- " + e.Message);
+                                                this.txtMensaje.Text = this.txtMensaje.Text + "\nExcepcion: " + e.Message;
+                                            }
+                                        }
+                                        else if (posflag == "61")// NOTA DE CREDITO ELECTRONICA
+                                        {
                                             //posflagtipo = "NOTA DE CREDITO ELECTRONICA";
                                             this.objLog.writeDTEVyV("Procesando Nota de Credito");
                                             try
-                                                {
-                                                    #region PROCESO NOTA DE CREDITO ELECTRONICA
-                                                    plantilla = new PlantillaXml();
-                                                    plant = this.plantilla.PlantillaCabNotaCredito();
-                                                    #region Creacion de XML Cabecera
-                                                    //DOCUMENTO
-                                                    plant = plant.Replace("#TPODTE#", posflag);
-                                                    plant = plant.Replace("#FECEMISION#", DateTime.Now.ToString("yyyy-MM-dd"));
-                                                    plant = plant.Replace("#FECVENC#", DateTime.Now.ToString("yyyy-MM-dd"));
-                                                this.objLog.writeDTEVyV("Procesando Nota de Credito 0.1"); 
+                                            {
+                                                #region PROCESO NOTA DE CREDITO ELECTRONICA
+                                                plantilla = new PlantillaXml();
+                                                plant = this.plantilla.PlantillaCabNotaCredito();
+                                                #region Creacion de XML Cabecera
+                                                //DOCUMENTO
+                                                plant = plant.Replace("#TPODTE#", posflag);
+                                                plant = plant.Replace("#FECEMISION#", DateTime.Now.ToString("yyyy-MM-dd"));
+                                                plant = plant.Replace("#FECVENC#", DateTime.Now.ToString("yyyy-MM-dd"));
+                                                this.objLog.writeDTEVyV("Procesando Nota de Credito 0.1");
                                                 //EMISOR
                                                 plant = plant.Replace("#RUTEMISOR#", DTEVyV_RutEmisor);
-                                                    plant = plant.Replace("#RZNSOC#", DTEVyV_RznSocEmi);
+                                                plant = plant.Replace("#RZNSOC#", DTEVyV_RznSocEmi);
                                                 this.objLog.writeDTEVyV("Procesando Nota de Credito 0.2");
                                                 DTEValidaciones(DTEVyV_RznSocEmi, "Razon Social Emisor", 100, 1);
-                                                    plant = plant.Replace("#GIRO#", LargoCadenaMax(DTEVyV_Giro, 80));
+                                                plant = plant.Replace("#GIRO#", LargoCadenaMax(DTEVyV_Giro, 80));
                                                 this.objLog.writeDTEVyV("Procesando Nota de Credito 0.3");
                                                 DTEValidaciones(LargoCadenaMax(DTEVyV_Giro, 80), "Giro Emisor", 80, 1);
-                                                    plant = plant.Replace("#ACTECO#", this.ParamValues.DTEVyV_ACTECO);
-                                                    plant = plant.Replace("#CDGSIISUCUR#", DTEVyV_codigo_sii_sucursal);
-                                                    DTEValidaciones(DTEVyV_codigo_sii_sucursal, "Sucursal Emisor", 20, 1);
-                                                    plant = plant.Replace("#DIRORIGEN#", DTEVyV_DirOrigen);
+                                                plant = plant.Replace("#ACTECO#", this.ParamValues.DTEVyV_ACTECO);
+                                                plant = plant.Replace("#CDGSIISUCUR#", DTEVyV_codigo_sii_sucursal);
+                                                DTEValidaciones(DTEVyV_codigo_sii_sucursal, "Sucursal Emisor", 20, 1);
+                                                plant = plant.Replace("#DIRORIGEN#", DTEVyV_DirOrigen);
                                                 this.objLog.writeDTEVyV("Procesando Nota de Credito 0.4");
                                                 plant = plant.Replace("#CMNAORIGEN#", DTEVyV_CmnaOrigen);
-                                                    plant = plant.Replace("#CIUDADORIGEN#", DTEVyV_CiudadOrigen);
-                                                    this.objLog.writeDTEVyV("Procesando Nota de Credito 2");
+                                                plant = plant.Replace("#CIUDADORIGEN#", DTEVyV_CiudadOrigen);
+                                                this.objLog.writeDTEVyV("Procesando Nota de Credito 2");
                                                 //RECEPTOR
                                                 plant = plant.Replace("#RUTRECEPTOR#", numdoccliente);
-                                                    DTEValidaciones(numdoccliente, "RUT Receptor", 10, 1);
-                                                    string nombrecliente = jsoncustomerRest.GetValue("first_name").ToString() + " " + jsoncustomerRest.GetValue("last_name").ToString();
-                                                    if (nombrecliente == "")
-                                                    {
-                                                        plant = plant.Replace("#RZNSOCRECEP#", this.ParamValues.DTEVyV_NombreClientedefault);
-                                                        DTEValidaciones(this.ParamValues.DTEVyV_NombreClientedefault, "Razon Social Receptor", 100, 1);
-                                                    }
-                                                    else
-                                                    {
-                                                        plant = plant.Replace("#RZNSOCRECEP#", nombrecliente);
-                                                        DTEValidaciones(nombrecliente, "Razon Social Receptor", 100, 2);
-                                                    }
-                                                    string giro = jsoncustomerRest.GetValue("notes").ToString();
-                                                    if (giro == "")
-                                                    {
-                                                        plant = plant.Replace("#GIRORECEP#", LargoCadenaMax(this.ParamValues.DTEVyV_GiroClientedefault, 40));
-                                                        DTEValidaciones(LargoCadenaMax(this.ParamValues.DTEVyV_GiroClientedefault, 40), "Giro Receptor", 40, 1);
-                                                    }
-                                                    else
-                                                    {
-                                                        plant = plant.Replace("#GIRORECEP#", LargoCadenaMax(giro, 40));
-                                                        DTEValidaciones(LargoCadenaMax(giro, 40), "Giro Receptor", 40, 2);
-                                                    }
-                                                    plant = plant.Replace("#DIRRECEP#", jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString());
-                                                    DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Ciudad Receptor", 70, 2);
-                                                    plant = plant.Replace("#CMNARECEP#", jsoncustomerRest.GetValue("primary_address_line_4").ToString());
-                                                    DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_4").ToString(), "Comuna Receptor", 20, 1);
-                                                    plant = plant.Replace("#CIUDADRECEP#", jsoncustomerRest.GetValue("primary_address_line_5").ToString());
-                                                    DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_5").ToString(), "Ciudad Receptor", 20, 1);
+                                                DTEValidaciones(numdoccliente, "RUT Receptor", 10, 1);
+                                                string nombrecliente = jsoncustomerRest.GetValue("first_name").ToString() + " " + jsoncustomerRest.GetValue("last_name").ToString();
+                                                if (nombrecliente == "")
+                                                {
+                                                    plant = plant.Replace("#RZNSOCRECEP#", this.ParamValues.DTEVyV_NombreClientedefault);
+                                                    DTEValidaciones(this.ParamValues.DTEVyV_NombreClientedefault, "Razon Social Receptor", 100, 1);
+                                                }
+                                                else
+                                                {
+                                                    plant = plant.Replace("#RZNSOCRECEP#", nombrecliente);
+                                                    DTEValidaciones(nombrecliente, "Razon Social Receptor", 100, 2);
+                                                }
+                                                string giro = jsoncustomerRest.GetValue("notes").ToString();
+                                                if (giro == "")
+                                                {
+                                                    plant = plant.Replace("#GIRORECEP#", LargoCadenaMax(this.ParamValues.DTEVyV_GiroClientedefault, 40));
+                                                    DTEValidaciones(LargoCadenaMax(this.ParamValues.DTEVyV_GiroClientedefault, 40), "Giro Receptor", 40, 1);
+                                                }
+                                                else
+                                                {
+                                                    plant = plant.Replace("#GIRORECEP#", LargoCadenaMax(giro, 40));
+                                                    DTEValidaciones(LargoCadenaMax(giro, 40), "Giro Receptor", 40, 2);
+                                                }
+                                                plant = plant.Replace("#DIRRECEP#", jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString());
+                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Ciudad Receptor", 70, 2);
+                                                plant = plant.Replace("#CMNARECEP#", jsoncustomerRest.GetValue("primary_address_line_4").ToString());
+                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_4").ToString(), "Comuna Receptor", 20, 1);
+                                                plant = plant.Replace("#CIUDADRECEP#", jsoncustomerRest.GetValue("primary_address_line_5").ToString());
+                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_5").ToString(), "Ciudad Receptor", 20, 1);
                                                 //plant = plant.Replace("#DirPostal#", "");
                                                 //plant = plant.Replace("#CmnaPostal#", "");
                                                 //plant = plant.Replace("#CiudadPostal#", "");
@@ -1013,127 +1057,127 @@
                                                 #region Creacion Xml Detalle
                                                 this.objLog.writeDTEVyV("Procesando Nota de Credito 4");
                                                 string strjson3 = json2.GetValue("docitem").ToString();
-                                                    JArray jsonArray = JArray.Parse(strjson3);
-                                                    Decimal monto_neto_suma_detalle = 0;
-                                                    foreach (JObject jsonOperaciones in jsonArray.Children<JObject>())
-                                                    {
+                                                JArray jsonArray = JArray.Parse(strjson3);
+                                                Decimal monto_neto_suma_detalle = 0;
+                                                foreach (JObject jsonOperaciones in jsonArray.Children<JObject>())
+                                                {
                                                     this.objLog.writeDTEVyV(strjson3);
                                                     if (contadordetalle < 41)
-                                                        {
-                                                        this.objLog.writeDTEVyV("Procesando Nota de Credito cont"+ contadordetalle);
+                                                    {
+                                                        this.objLog.writeDTEVyV("Procesando Nota de Credito cont" + contadordetalle);
                                                         string kitflag = "0";
-                                                            try
-                                                            {
-                                                                kitflag = (jsonOperaciones["kitflag"]).ToString();
-                                                            }
-                                                            catch (Exception e)
-                                                            {
-                                                                kitflag = "0";
-                                                            }
+                                                        try
+                                                        {
+                                                            kitflag = (jsonOperaciones["kitflag"]).ToString();
+                                                        }
+                                                        catch (Exception e)
+                                                        {
+                                                            kitflag = "0";
+                                                        }
                                                         this.objLog.writeDTEVyV("Rev 1");
                                                         if (!"5".Equals(kitflag))
-                                                            {
+                                                        {
                                                             this.objLog.writeDTEVyV("Rev 1.1");
                                                             string descuento = string.Empty;
-                                                                plantilla = new PlantillaXml();
-                                                                plantdet = plantdet + this.plantilla.PantillaDetNotaCredito();
-                                                                plantdet = plantdet.Replace("#NROLINDET#", (jsonOperaciones["itempos"]).ToString());
-                                                                plantdet = plantdet.Replace("#TPOCODIGO#", "INTERNO");
-                                                                plantdet = plantdet.Replace("#VLRCODIGO#", (jsonOperaciones["alu"]).ToString());
-                                                                DTEValidaciones(jsonOperaciones["alu"].ToString(), "Código Item", 35, 1);
-                                                                this.objLog.writeDTEVyV("Rev 1.2");
-                                                                 plantdet = plantdet.Replace("#NMBITEM#", (jsonOperaciones["description1"]).ToString());
-                                                                DTEValidaciones(jsonOperaciones["description1"].ToString(), "Nombre Item", 70, 1);
-                                                                plantdet = plantdet.Replace("#DESC#", (jsonOperaciones["description1"]).ToString());
-                                                                
-                                                                string cantidad = (jsonOperaciones["qty"]).ToString();
-                                                                cantidad = cantidad.Replace(',', '.');
-                                                                plantdet = plantdet.Replace("#QTYITEM#", cantidad);
-                                                                string iva = (jsonOperaciones["taxamt"]).ToString();
-                                                                string precio = (jsonOperaciones["price"]).ToString();
-                                                                string cantidad_decimal = cantidad.Replace(".", ",");
-                                                                iva = iva.Replace(".", ",");
-                                                            
-                                                                this.objLog.writeDTEVyV("Rev 1.3 "+ precio + "   "+ cantidad_decimal+ "       "+ iva+ "     "+ cantidad_decimal);
-                                                                double montoitem = ((Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal)) - (Convert.ToDouble(iva) * Convert.ToDouble(cantidad_decimal)));
-                                                                this.objLog.writeDTEVyV("Rev 1.3.1");
-                                                                string monto_item_calculado = Math.Round(Convert.ToDecimal(montoitem.ToString())).ToString();
-                                                                plantdet = plantdet.Replace("#MONTOITEM#", monto_item_calculado);
-                                                                this.objLog.writeDTEVyV("Rev 1.3.2 --> monto_item = "+ monto_item_calculado);
-                                                                monto_neto_suma_detalle = monto_neto_suma_detalle + Decimal.Round(Convert.ToDecimal(monto_item_calculado.ToString()));
+                                                            plantilla = new PlantillaXml();
+                                                            plantdet = plantdet + this.plantilla.PantillaDetNotaCredito();
+                                                            plantdet = plantdet.Replace("#NROLINDET#", (jsonOperaciones["itempos"]).ToString());
+                                                            plantdet = plantdet.Replace("#TPOCODIGO#", "INTERNO");
+                                                            plantdet = plantdet.Replace("#VLRCODIGO#", (jsonOperaciones["alu"]).ToString());
+                                                            DTEValidaciones(jsonOperaciones["alu"].ToString(), "Código Item", 35, 1);
+                                                            this.objLog.writeDTEVyV("Rev 1.2");
+                                                            plantdet = plantdet.Replace("#NMBITEM#", (jsonOperaciones["description1"]).ToString());
+                                                            DTEValidaciones(jsonOperaciones["description1"].ToString(), "Nombre Item", 70, 1);
+                                                            plantdet = plantdet.Replace("#DESC#", (jsonOperaciones["description1"]).ToString());
 
-                                                                this.objLog.writeDTEVyV("Rev 1.3.3");
-                                                                string precioori = (jsonOperaciones["price"]).ToString();
-                                                                this.objLog.writeDTEVyV("Rev 1.3.4");
-                                                                decimal preciosiniva = (Convert.ToDecimal(precioori) - Convert.ToDecimal(iva));
-                                                                this.objLog.writeDTEVyV("Rev 1.3.5");
-                                                                plantdet = plantdet.Replace("#PRCITEM#", Decimal.Round(preciosiniva).ToString());
-                                                                this.objLog.writeDTEVyV("Rev 1.3.6");
-                                                                DTEValidaciones(preciosiniva.ToString(), "Precio Item", 19, 2);
-                                                                this.objLog.writeDTEVyV("Procesando Nota de Credito 5" );
+                                                            string cantidad = (jsonOperaciones["qty"]).ToString();
+                                                            cantidad = cantidad.Replace(',', '.');
+                                                            plantdet = plantdet.Replace("#QTYITEM#", cantidad);
+                                                            string iva = (jsonOperaciones["taxamt"]).ToString();
+                                                            string precio = (jsonOperaciones["price"]).ToString();
+                                                            string cantidad_decimal = cantidad.Replace(".", ",");
+                                                            iva = iva.Replace(".", ",");
+
+                                                            this.objLog.writeDTEVyV("Rev 1.3 " + precio + "   " + cantidad_decimal + "       " + iva + "     " + cantidad_decimal);
+                                                            double montoitem = ((Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal)) - (Convert.ToDouble(iva) * Convert.ToDouble(cantidad_decimal)));
+                                                            this.objLog.writeDTEVyV("Rev 1.3.1");
+                                                            string monto_item_calculado = Math.Round(Convert.ToDecimal(montoitem.ToString())).ToString();
+                                                            plantdet = plantdet.Replace("#MONTOITEM#", monto_item_calculado);
+                                                            this.objLog.writeDTEVyV("Rev 1.3.2 --> monto_item = " + monto_item_calculado);
+                                                            monto_neto_suma_detalle = monto_neto_suma_detalle + Decimal.Round(Convert.ToDecimal(monto_item_calculado.ToString()));
+
+                                                            this.objLog.writeDTEVyV("Rev 1.3.3");
+                                                            string precioori = (jsonOperaciones["price"]).ToString();
+                                                            this.objLog.writeDTEVyV("Rev 1.3.4");
+                                                            decimal preciosiniva = (Convert.ToDecimal(precioori) - Convert.ToDecimal(iva));
+                                                            this.objLog.writeDTEVyV("Rev 1.3.5");
+                                                            plantdet = plantdet.Replace("#PRCITEM#", Decimal.Round(preciosiniva).ToString());
+                                                            this.objLog.writeDTEVyV("Rev 1.3.6");
+                                                            DTEValidaciones(preciosiniva.ToString(), "Precio Item", 19, 2);
+                                                            this.objLog.writeDTEVyV("Procesando Nota de Credito 5");
                                                             try
+                                                            {
+                                                                descuento = (jsonOperaciones["discamt"]).ToString();
+                                                                if (descuento != string.Empty && descuento != "0")
                                                                 {
-                                                                    descuento = (jsonOperaciones["discamt"]).ToString();
-                                                                    if (descuento != string.Empty && descuento != "0")
+                                                                    decimal descuento_decimal = Convert.ToDecimal(descuento);
+                                                                    if (descuento_decimal < 0)
                                                                     {
-                                                                        decimal descuento_decimal = Convert.ToDecimal(descuento);
-                                                                        if (descuento_decimal < 0)
-                                                                        {
-                                                                            descuento_decimal = descuento_decimal * -1;
-                                                                            descuento = descuento_decimal.ToString();
-                                                                        }
-                                                                        descuento = "<DescuentoMonto>" + descuento + "</DescuentoMonto></Detalle>";
-                                                                        plantdet = plantdet.Replace("#DESCUENTO#", descuento);
+                                                                        descuento_decimal = descuento_decimal * -1;
+                                                                        descuento = descuento_decimal.ToString();
                                                                     }
-                                                                    else
-                                                                    {
-                                                                        descuento = "</Detalle>";
-                                                                        plantdet = plantdet.Replace("#DESCUENTO#", descuento);
-                                                                    }
-
+                                                                    descuento = "<DescuentoMonto>" + descuento + "</DescuentoMonto></Detalle>";
+                                                                    plantdet = plantdet.Replace("#DESCUENTO#", descuento);
                                                                 }
-                                                                catch
+                                                                else
                                                                 {
                                                                     descuento = "</Detalle>";
                                                                     plantdet = plantdet.Replace("#DESCUENTO#", descuento);
                                                                 }
-                                                                contadordetalle = contadordetalle + 1;
+
                                                             }
-                                                        }
-                                                        else
-                                                        {
-                                                            msg = "No es posible superar los 40 Items";
-                                                            throw new ApplicationException(msg);
+                                                            catch
+                                                            {
+                                                                descuento = "</Detalle>";
+                                                                plantdet = plantdet.Replace("#DESCUENTO#", descuento);
+                                                            }
+                                                            contadordetalle = contadordetalle + 1;
                                                         }
                                                     }
-                                                    this.objLog.writeDTEVyV("Procesando Nota de Credito 6");
-                                                    this.objLog.writeDTEVyV("6.1.- monto_neto_suma_detalle  "+ monto_neto_suma_detalle);
-                                                    decimal neto = Decimal.Round(Convert.ToDecimal(monto_neto_suma_detalle.ToString()));
-                                                    this.objLog.writeDTEVyV("6.2.- neto  " + neto);
-                                                    plant = plant.Replace("#MNTNETO#", neto.ToString());
-                                                    this.objLog.writeDTEVyV("6.3.-neto  " + plant);
-                                                    plant = plant.Replace("#DETALLE#", plantdet);
+                                                    else
+                                                    {
+                                                        msg = "No es posible superar los 40 Items";
+                                                        throw new ApplicationException(msg);
+                                                    }
+                                                }
+                                                this.objLog.writeDTEVyV("Procesando Nota de Credito 6");
+                                                this.objLog.writeDTEVyV("6.1.- monto_neto_suma_detalle  " + monto_neto_suma_detalle);
+                                                decimal neto = Decimal.Round(Convert.ToDecimal(monto_neto_suma_detalle.ToString()));
+                                                this.objLog.writeDTEVyV("6.2.- neto  " + neto);
+                                                plant = plant.Replace("#MNTNETO#", neto.ToString());
+                                                this.objLog.writeDTEVyV("6.3.-neto  " + plant);
+                                                plant = plant.Replace("#DETALLE#", plantdet);
                                                 #endregion,
                                                 #region Creacion Xml Referencia
-                                                    this.objLog.writeDTEVyV("6.4.-refsalesid  " + json2.GetValue("refsalesid").ToString());
-                                                    String idreferencia = json2.GetValue("refsalesid").ToString();
-                                                    this.objLog.writeDTEVyV("6.5.-idreferencia  " + json2.GetValue("refsalesid").ToString());
-                                                    string tokenCentral = this.doPRISMLoginCentral(this.objLog);
-                                                    this.objLog.writeDTEVyV("6.5.1.-tokenCentral  " + tokenCentral);
-                                                    JObject jsonref = JObject.Parse(this.GETDocumentCentral(idreferencia, tokenCentral));
-                                                    this.objLog.writeDTEVyV("6.6.-jsonref  " + jsonref);
-                                                    JObject jsonreferencia = JObject.Parse(jsonref.GetValue("data")[0].ToString());
-                                                    this.objLog.writeDTEVyV("Procesando Nota de Credito 7");
-                                                    string posflagref = jsonreferencia.GetValue("posflag1").ToString().Trim().Substring(0, 2);
-                                                    plantilla = new PlantillaXml();
-                                                    plantref = plantref + this.plantilla.PlantillaRefNotaCredito();
-                                                    plantref = plantref.Replace("#NROLINREF#", "1");
-                                                    plantref = plantref.Replace("#TPODOCREF#", posflagref);
-                                                    plantref = plantref.Replace("#FOLIOREF#", jsonreferencia.GetValue("docno").ToString());
-                                                    DateTime fecharef = DateTime.Parse(jsonreferencia.GetValue("modifieddatetime").ToString());
-                                                    string fecharefstr = String.Format("{0:yyyy-MM-dd}", fecharef);
-                                                    plantref = plantref.Replace("#FCHREF#", fecharefstr);
-                                                    plantref = plantref.Replace("#CODREF#", "1");
+                                                this.objLog.writeDTEVyV("6.4.-refsalesid  " + json2.GetValue("refsalesid").ToString());
+                                                String idreferencia = json2.GetValue("refsalesid").ToString();
+                                                this.objLog.writeDTEVyV("6.5.-idreferencia  " + json2.GetValue("refsalesid").ToString());
+                                                string tokenCentral = this.doPRISMLoginCentral(this.objLog);
+                                                this.objLog.writeDTEVyV("6.5.1.-tokenCentral  " + tokenCentral);
+                                                JObject jsonref = JObject.Parse(this.GETDocumentCentral(idreferencia, tokenCentral));
+                                                this.objLog.writeDTEVyV("6.6.-jsonref  " + jsonref);
+                                                JObject jsonreferencia = JObject.Parse(jsonref.GetValue("data")[0].ToString());
+                                                this.objLog.writeDTEVyV("Procesando Nota de Credito 7");
+                                                string posflagref = jsonreferencia.GetValue("posflag1").ToString().Trim().Substring(0, 2);
+                                                plantilla = new PlantillaXml();
+                                                plantref = plantref + this.plantilla.PlantillaRefNotaCredito();
+                                                plantref = plantref.Replace("#NROLINREF#", "1");
+                                                plantref = plantref.Replace("#TPODOCREF#", posflagref);
+                                                plantref = plantref.Replace("#FOLIOREF#", jsonreferencia.GetValue("docno").ToString());
+                                                DateTime fecharef = DateTime.Parse(jsonreferencia.GetValue("modifieddatetime").ToString());
+                                                string fecharefstr = String.Format("{0:yyyy-MM-dd}", fecharef);
+                                                plantref = plantref.Replace("#FCHREF#", fecharefstr);
+                                                plantref = plantref.Replace("#CODREF#", "1");
                                                 this.objLog.writeDTEVyV("Procesando Nota de Credito 7");
                                                 plant = plant.Replace("#REFERENCIA#", plantref);
                                                 #endregion
@@ -1143,26 +1187,26 @@
                                                 this.objLog.writeDTEVyV("Folio Obtenido " + folio);
                                                 this.objLog.writeDTEVyV("Procesando Nota de Credito 8");
                                                 if (folio == "0")
-                                                    {
-                                                        //this.objLog.write(folio);
-                                                        flag2 = false;
-                                                        num = 200;
-                                                        status = "999";
-                                                        msg = "No existen folios disponibles";
-                                                        string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + msg + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}" };
-                                                        str = string.Concat(textArray5);
-                                                        this.objLog.write("ProcessEvent** Error: " + msg);
-                                                    }
-                                                    else
-                                                    {
-                                                        plant = plant.Replace("#DOCUMENTOID#", "R" + DTEVyV_RutEmisor + "T" + posflag + "F" + folio);
-                                                        plant = plant.Replace("#FOLIO#", folio);
-                                                    }
+                                                {
+                                                    //this.objLog.write(folio);
+                                                    flag2 = false;
+                                                    num = 200;
+                                                    status = "999";
+                                                    msg = "No existen folios disponibles";
+                                                    string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + msg + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}" };
+                                                    str = string.Concat(textArray5);
+                                                    this.objLog.write("ProcessEvent** Error: " + msg);
+                                                }
+                                                else
+                                                {
+                                                    plant = plant.Replace("#DOCUMENTOID#", "R" + DTEVyV_RutEmisor + "T" + posflag + "F" + folio);
+                                                    plant = plant.Replace("#FOLIO#", folio);
+                                                }
                                                 this.objLog.writeDTEVyV("Plantilla xml  " + plant);
                                                 #endregion
                                                 if (folio != "0")
-                                                    {
-                                                   // this.objLog.writeDTEVyV("Enviando XML al DTE");
+                                                {
+                                                    // this.objLog.writeDTEVyV("Enviando XML al DTE");
                                                     docelectpdf = this.DTESolicitaDocElectronico(plant, ref status, ref msg, ref xmlres);
                                                     this.objLog.writeDTEVyV("status DTE " + status);
                                                     this.objLog.writeDTEVyV("respuesta DTE " + msg);
@@ -1180,30 +1224,30 @@
                                                             msg = "Error al generar el PDF";
                                                         }
                                                         string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + msg + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}" };
-                                                            str = string.Concat(textArray5);
-                                                        }
-                                                        else
-                                                        {
-                                                            flag2 = false;
-                                                            num = 200;
-                                                            string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + msg + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}" };
-                                                            str = string.Concat(textArray5);
-                                                            this.objLog.write("ProcessEvent** Error: " + "Estatus fuera de rango" + msg);
-                                                        }
+                                                        str = string.Concat(textArray5);
                                                     }
-                                                    #endregion
+                                                    else
+                                                    {
+                                                        flag2 = false;
+                                                        num = 200;
+                                                        string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + msg + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}" };
+                                                        str = string.Concat(textArray5);
+                                                        this.objLog.write("ProcessEvent** Error: " + "Estatus fuera de rango" + msg);
+                                                    }
                                                 }
-                                                catch (Exception e)
-                                                {
-                                                    flag2 = false;
-                                                    num = 200;
-                                                    status = "555";
-                                                    this.objLog.write("EXCEPTION2");
-                                                    str = "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + e.Message + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}";
-                                                    this.objLog.write("ProcessEvent *********** Error General -- " + e.Message);
-                                                    this.txtMensaje.Text = this.txtMensaje.Text + "\nExcepcion: " + e.Message;
-                                                }
+                                                #endregion
                                             }
+                                            catch (Exception e)
+                                            {
+                                                flag2 = false;
+                                                num = 200;
+                                                status = "555";
+                                                this.objLog.write("EXCEPTION2");
+                                                str = "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + e.Message + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}";
+                                                this.objLog.write("ProcessEvent *********** Error General -- " + e.Message);
+                                                this.txtMensaje.Text = this.txtMensaje.Text + "\nExcepcion: " + e.Message;
+                                            }
+                                        }
                                     }
                                     else
                                     {
@@ -1235,7 +1279,7 @@
                         string ted = string.Empty;
                         string tedbase64 = string.Empty;
 
-                       // this.objLog.write("ENTRAMOS");
+                        // this.objLog.write("ENTRAMOS");
                         foreach (JObject obj3 in JArray.Parse("[" + message.Payload + "]").Children<JObject>())
                         {
                             foreach (JProperty property in obj3.Properties())
@@ -1248,7 +1292,7 @@
                                     errors = json.GetValue("errors").ToString();
                                     if (errors == "")
                                     {
-                                        
+
                                         JObject json2 = JObject.Parse(json.GetValue("data")[0].ToString());
                                         string idTienda = json2.GetValue("outstoreno").ToString();
                                         JObject jsonstore = JObject.Parse(this.GETStore(idTienda, token));
@@ -1282,11 +1326,11 @@
                                             plant = plant.Replace("#RUTEMISOR#", json2.GetValue("origstorezip").ToString().ToUpper());
                                             plant = plant.Replace("#RZNSOC#", json2.GetValue("origstoreudf1string").ToString());
                                             DTEValidaciones(json2.GetValue("origstoreudf1string").ToString(), "Razon Social Emisor", 100, 1);
-                                            plant = plant.Replace("#GIRO#", LargoCadenaMax((json2.GetValue("origstoreudf2string").ToString() + " " + json2.GetValue("origstoreudf3string").ToString()).Trim(),80) );
+                                            plant = plant.Replace("#GIRO#", LargoCadenaMax((json2.GetValue("origstoreudf2string").ToString() + " " + json2.GetValue("origstoreudf3string").ToString()).Trim(), 80));
                                             DTEValidaciones(LargoCadenaMax((json2.GetValue("origstoreudf2string").ToString() + " " + json2.GetValue("origstoreudf3string").ToString()).Trim(), 80), "Giro Emisor", 80, 1);
                                             plant = plant.Replace("#ACTECO#", this.ParamValues.DTEVyV_ACTECO);
                                             plant = plant.Replace("#CDGSIISUCUR#", json2.GetValue("origstoreudf4string").ToString());
-                                            DTEValidaciones(json2.GetValue("origstoreudf4string").ToString(), "Sucursal Emisor", 20, 1);  
+                                            DTEValidaciones(json2.GetValue("origstoreudf4string").ToString(), "Sucursal Emisor", 20, 1);
                                             plant = plant.Replace("#DIRORIGEN#", json2.GetValue("origstoreaddress1").ToString());
                                             plant = plant.Replace("#CMNAORIGEN#", json2.GetValue("origstoreaddress2").ToString());
                                             plant = plant.Replace("#CIUDADORIGEN#", json2.GetValue("origstoreaddress3").ToString());
@@ -1295,8 +1339,8 @@
                                             DTEValidaciones(json2.GetValue("origstorezip").ToString(), "Rut Receptor", 10, 1);
                                             plant = plant.Replace("#RZNSOCRECEP#", json2.GetValue("instoreudf1string").ToString());
                                             DTEValidaciones(json2.GetValue("instoreudf1string").ToString(), "Razon Social Receptor", 100, 1);
-                                            plant = plant.Replace("#GIRORECEP#", LargoCadenaMax((json2.GetValue("instoreudf2string").ToString() + " " + json2.GetValue("instoreudf3string").ToString()).Trim(),40)     );
-                                            DTEValidaciones(LargoCadenaMax((json2.GetValue("instoreudf2string").ToString() + " " + json2.GetValue("instoreudf3string").ToString()).Trim(),40)   , "Giro Receptor", 40, 1);
+                                            plant = plant.Replace("#GIRORECEP#", LargoCadenaMax((json2.GetValue("instoreudf2string").ToString() + " " + json2.GetValue("instoreudf3string").ToString()).Trim(), 40));
+                                            DTEValidaciones(LargoCadenaMax((json2.GetValue("instoreudf2string").ToString() + " " + json2.GetValue("instoreudf3string").ToString()).Trim(), 40), "Giro Receptor", 40, 1);
                                             plant = plant.Replace("#DIRRECEP#", json2.GetValue("instoreaddress1").ToString());
                                             DTEValidaciones(json2.GetValue("instoreaddress1").ToString(), "Dirección Receptor", 70, 2);
                                             plant = plant.Replace("#CMNARECEP#", json2.GetValue("instoreaddress2").ToString());
@@ -1310,8 +1354,8 @@
                                             plant = plant.Replace("#CMNADEST#", json2.GetValue("instoreaddress2").ToString());
                                             plant = plant.Replace("#CIUDADDEST#", json2.GetValue("instoreaddress3").ToString());
                                             //TOTALES
-                                                
-                                            int iva = (Int32.Parse(json2.GetValue("docpricetotal").ToString()) * Int32.Parse(this.ParamValues.DTEVyV_TasaIVA)) / 100 ;
+
+                                            int iva = (Int32.Parse(json2.GetValue("docpricetotal").ToString()) * Int32.Parse(this.ParamValues.DTEVyV_TasaIVA)) / 100;
                                             int neto = Int32.Parse(json2.GetValue("docpricetotal").ToString()) - iva;
                                             plant = plant.Replace("#MNTNETO#", neto.ToString());
                                             DTEValidaciones(neto.ToString(), "Monto Neto", 18, 3);
@@ -1359,7 +1403,7 @@
                                                         int ivadet = (Int32.Parse((jsonOperaciones["price"]).ToString()) * Int32.Parse(this.ParamValues.DTEVyV_TasaIVA)) / 100;
                                                         string cantidad = (jsonOperaciones["qty"]).ToString();
                                                         string precio = (jsonOperaciones["price"]).ToString();
-                                                        this.objLog.writeDTEVyV("cantidad "+ cantidad);
+                                                        this.objLog.writeDTEVyV("cantidad " + cantidad);
                                                         string cantidad_decimal = cantidad.Replace(".", ",");
                                                         this.objLog.writeDTEVyV("cantidad_decimal " + cantidad_decimal);
                                                         Decimal montoitem = ((Decimal.Parse(precio) * Decimal.Parse(cantidad_decimal)) - (ivadet * Decimal.Parse(cantidad_decimal)));
@@ -1485,7 +1529,7 @@
                                     errors = json.GetValue("errors").ToString();
                                     if (errors == "")
                                     {
-                                       // this.objLog.writeDTEVyV(json.GetValue("data")[0].ToString());
+                                        // this.objLog.writeDTEVyV(json.GetValue("data")[0].ToString());
                                         JObject json2 = JObject.Parse(json.GetValue("data")[0].ToString());
                                         string idTienda = json2.GetValue("storeno").ToString();
                                         JObject jsonstore = JObject.Parse(this.GETStore(idTienda, token));
@@ -1518,8 +1562,8 @@
                                             plant = plant.Replace("#RUTEMISOR#", json2.GetValue("origzip").ToString().ToUpper());
                                             plant = plant.Replace("#RZNSOC#", json2.GetValue("origstoreudf1string").ToString());
                                             DTEValidaciones(json2.GetValue("origstoreudf1string").ToString(), "Razon Social Emisor", 100, 1);
-                                            plant = plant.Replace("#GIRO#", LargoCadenaMax((json2.GetValue("origstoreudf2string").ToString()+" "+ json2.GetValue("origstoreudf3string").ToString()).Trim(),80)   );
-                                            DTEValidaciones(LargoCadenaMax((json2.GetValue("origstoreudf2string").ToString() + " " + json2.GetValue("origstoreudf3string").ToString()).Trim(),80)  , "Giro Emisor", 80, 1);
+                                            plant = plant.Replace("#GIRO#", LargoCadenaMax((json2.GetValue("origstoreudf2string").ToString() + " " + json2.GetValue("origstoreudf3string").ToString()).Trim(), 80));
+                                            DTEValidaciones(LargoCadenaMax((json2.GetValue("origstoreudf2string").ToString() + " " + json2.GetValue("origstoreudf3string").ToString()).Trim(), 80), "Giro Emisor", 80, 1);
                                             plant = plant.Replace("#ACTECO#", this.ParamValues.DTEVyV_ACTECO);
                                             plant = plant.Replace("#CDGSIISUCUR#", json2.GetValue("origstoreudf4string").ToString());
                                             DTEValidaciones(json2.GetValue("origstoreudf4string").ToString(), "Sucursal Emisor", 20, 1);
@@ -1531,8 +1575,8 @@
                                             DTEValidaciones(json2.GetValue("vendorpostalcode").ToString(), "RUT Receptor", 10, 1);
                                             plant = plant.Replace("#RZNSOCRECEP#", json2.GetValue("vendoraddress4").ToString());
                                             DTEValidaciones(json2.GetValue("vendoraddress4").ToString(), "Razon Social Receptor", 100, 1);
-                                            plant = plant.Replace("#GIRORECEP#", LargoCadenaMax((json2.GetValue("vendoraddress5").ToString()+ " " + json2.GetValue("vendoraddress6").ToString()).Trim(),40) );
-                                            DTEValidaciones(LargoCadenaMax((json2.GetValue("vendoraddress5").ToString() + " " + json2.GetValue("vendoraddress6").ToString()).Trim(), 40) , "Giro Receptor", 40, 1);
+                                            plant = plant.Replace("#GIRORECEP#", LargoCadenaMax((json2.GetValue("vendoraddress5").ToString() + " " + json2.GetValue("vendoraddress6").ToString()).Trim(), 40));
+                                            DTEValidaciones(LargoCadenaMax((json2.GetValue("vendoraddress5").ToString() + " " + json2.GetValue("vendoraddress6").ToString()).Trim(), 40), "Giro Receptor", 40, 1);
                                             plant = plant.Replace("#DIRRECEP#", json2.GetValue("vendoraddress1").ToString());
                                             DTEValidaciones(json2.GetValue("vendoraddress1").ToString(), "Dirección Receptor", 70, 2);
                                             plant = plant.Replace("#CMNARECEP#", json2.GetValue("vendoraddress2").ToString());
@@ -1547,7 +1591,7 @@
                                             plant = plant.Replace("#CIUDADDEST#", json2.GetValue("vendoraddress3").ToString());
                                             #endregion
                                             #region Creacion Xml Detalle
-                                            string jsonitem = json2.GetValue("recvitem").ToString(); 
+                                            string jsonitem = json2.GetValue("recvitem").ToString();
                                             JArray jsonArrayitem = JArray.Parse(jsonitem);
                                             int valortotal = 0;
                                             foreach (JObject jsonOperaciones in jsonArrayitem.Children<JObject>())
@@ -1558,11 +1602,12 @@
                                                     try
                                                     {
                                                         kitflag = (jsonOperaciones["kitflag"]).ToString();
-                                                    }catch(Exception e)
+                                                    }
+                                                    catch (Exception e)
                                                     {
                                                         kitflag = "0";
                                                     }
-                                                   
+
                                                     if (!"5".Equals(kitflag))
                                                     {
                                                         plantilla = new PlantillaXml();
@@ -1635,7 +1680,7 @@
                                             #endregion
                                             if (folio != "0")
                                             {
-                                               // this.objLog.writeDTEVyV("Enviando XML al DTE");
+                                                // this.objLog.writeDTEVyV("Enviando XML al DTE");
                                                 docelectpdf = this.DTESolicitaDocElectronico(plant, ref status, ref msg, ref xmlres);
                                                 this.objLog.writeDTEVyV("status DTE " + status);
                                                 this.objLog.writeDTEVyV("respuesta DTE " + msg);
@@ -1688,7 +1733,7 @@
                                 }
                             }
                         }
-                       // this.objLog.write("SALIMOS");
+                        // this.objLog.write("SALIMOS");
                     }
                     if (((ADirection == "FromClient") && (AHTTPVerb == "GET")) && (AResourceName.ToUpper() == "CALLFEBOSFELOGIN"))
                     {
@@ -1857,7 +1902,7 @@
 
                                     }
                                 }
-                                
+
                             }
                             catch (Exception exception2)
                             {
@@ -1868,7 +1913,7 @@
                             }
 
 
-                            string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"MsgEstatus\":" + msg  + "}" };
+                            string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"MsgEstatus\":" + msg + "}" };
                             str = string.Concat(textArray5);
                         }
                     }
@@ -1977,9 +2022,9 @@
 
                                     token = this.doPRISMLoginAux(this.objLog);
                                     str21 = (string)property.Value;
-                                   // this.objLog.write("documentID: " + str21);
+                                    // this.objLog.write("documentID: " + str21);
                                     JObject json = JObject.Parse(this.GETDocument(str21, token));
-                                   // this.objLog.write("json: " + json);
+                                    // this.objLog.write("json: " + json);
                                     errors = json.GetValue("errors").ToString();
                                     //this.objLog.write("errors: " + errors);
                                     if (errors == "")
@@ -1993,11 +2038,11 @@
                                         //this.objLog.writeDTESignature(" posflag " + posflag);
 
                                         string idcliente = json2.GetValue("btcuid").ToString();
-                                       // this.objLog.writeDTESignature(" idcliente " + idcliente);
+                                        // this.objLog.writeDTESignature(" idcliente " + idcliente);
                                         JArray jsoncustomerRest1 = JArray.Parse(this.GETCustomerRest(idcliente, token));
                                         JObject jsoncustomerRest = JObject.Parse(jsoncustomerRest1[0].ToString());
-                                       // JObject jsoncustomer = JObject.Parse(this.GETCustomer(idcliente, token));
-                                       // JObject jsoncustomer2 = JObject.Parse(jsoncustomer.GetValue("data")[0].ToString());
+                                        // JObject jsoncustomer = JObject.Parse(this.GETCustomer(idcliente, token));
+                                        // JObject jsoncustomer2 = JObject.Parse(jsoncustomer.GetValue("data")[0].ToString());
                                         //this.objLog.write(jsoncustomer.GetValue("data")[0].ToString());
                                         numdoccliente = jsoncustomerRest.GetValue("info1").ToString();
 
@@ -2025,12 +2070,12 @@
                                                 SignatureDTE boleta = new SignatureDTE("eBoleta");
 
                                                 #region Creacion Cabecera
-                                                                                             
+
                                                 //Validacion de rut
                                                 //RECEPTOR
                                                 DTEValidaciones(numdoccliente, "Rut Receptor", 10, 1);
                                                 boleta.Args.Operation.Receiver.RUTRecep = numdoccliente;
-                                               // this.objLog.write("Rut Receptor --> "+ numdoccliente);
+                                                // this.objLog.write("Rut Receptor --> "+ numdoccliente);
 
                                                 //DOCUMENTO
                                                 //Fecha de emision , vencimiento, indicador de servicio los carga por defecto al instanciar el objecto
@@ -2117,7 +2162,7 @@
                                                         //{
                                                         //}
 
-                                                        
+
                                                         DTEValidaciones(jsonOperaciones["description1"].ToString(), "Nombre Item", 70, 1);
                                                         det.NroLinDet = jsonOperaciones["itempos"].Value<Int32>();// Int32.Parse((jsonOperaciones["itempos"]).ToString());
                                                         det.NmbItem = (jsonOperaciones["description1"]).ToString();
@@ -2126,7 +2171,7 @@
                                                         //string cantidad = (jsonOperaciones["qty"]).ToString();
                                                         //cantidad = cantidad.Replace(',', '.');
                                                         det.QtyItem = jsonOperaciones["qty"].Value<float>();// float.Parse(cantidad);
-                                                        if(this.ParamValues.DTESignature_PreciosConIva == "S")
+                                                        if (this.ParamValues.DTESignature_PreciosConIva == "S")
                                                         {
                                                             det.PrcItem = jsonOperaciones["price"].Value<float>();
                                                         }
@@ -2179,7 +2224,7 @@
                                                     num = 200;
                                                     this.objLog.write(ted);
                                                     tedbase64 = EncodeStrToBase64(ted);
-                                                    this.objLog.writeDTESignature("folio "+ folio);
+                                                    this.objLog.writeDTESignature("folio " + folio);
                                                     this.objLog.writeDTESignature("TED " + ted);
 
                                                     string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + msg + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}" };
@@ -2255,12 +2300,12 @@
 
 
                                                 //Validaciones direcciones
-                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString()+ " "+ jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Dirección Receptor", 70, 2);
+                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Dirección Receptor", 70, 2);
                                                 DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_4").ToString(), "Comuna Receptor", 20, 1);
                                                 DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_5").ToString(), "Ciudad Receptor", 20, 1);
 
                                                 //Direcciones
-                                                dte.Args.Operation.Receiver.DirRecep = jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " "+ jsoncustomerRest.GetValue("primary_address_line_2").ToString();
+                                                dte.Args.Operation.Receiver.DirRecep = jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString();
                                                 dte.Args.Operation.Receiver.CmnaRecep = jsoncustomerRest.GetValue("primary_address_line_4").ToString();
                                                 dte.Args.Operation.Receiver.CiudadRecep = jsoncustomerRest.GetValue("primary_address_line_5").ToString();
 
@@ -2319,19 +2364,19 @@
                                                         //det.CdgItems.Add(new Cdgitem("INTERNO", (jsonOperaciones["alu"]).ToString()));
                                                         //DTEValidaciones(jsonOperaciones["alu"].ToString(), "Valor Código", 35, 1);
 
-                                                        
+
                                                         det.QtyItem = jsonOperaciones["qty"].Value<float>();
                                                         if (this.ParamValues.DTESignature_PreciosConIva == "S")
                                                         {
-                                                            det.PrcItem = jsonOperaciones["price"].Value<float>() - jsonOperaciones["taxamt"].Value<float>(); 
+                                                            det.PrcItem = jsonOperaciones["price"].Value<float>() - jsonOperaciones["taxamt"].Value<float>();
                                                         }
                                                         else
                                                         {
                                                             det.PrcItem = jsonOperaciones["price"].Value<float>();
                                                         }
 
-                                                        
-                                                        det.MontoItem = Convert.ToInt32(det.PrcItem* det.QtyItem);
+
+                                                        det.MontoItem = Convert.ToInt32(det.PrcItem * det.QtyItem);
 
                                                         det.CdgItems.Add(new Cdgitem("INTERNO", (jsonOperaciones["alu"]).ToString()));
                                                         DTEValidaciones(jsonOperaciones["alu"].ToString(), "Valor Código", 35, 1);
@@ -2465,7 +2510,7 @@
 
                                                 this.objLog.write("DIRECCIONES");
                                                 //Validaciones direcciones
-                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " "+ jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Dirección Receptor", 70, 2);
+                                                DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Dirección Receptor", 70, 2);
                                                 DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_4").ToString(), "Comuna Receptor", 20, 1);
                                                 DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_5").ToString(), "Ciudad Receptor", 20, 1);
 
@@ -2506,11 +2551,11 @@
 
                                                 //int neto = json2["returnsubtotalwithtax"].Value<Int32>() - json2["returntotaltaxamt"].Value<Int32>();
                                                 Totals total = new Totals();
-                                                
+
                                                 total.TasaIVA = float.Parse(this.ParamValues.DTESignature_TasaIVA);
                                                 total.IVA = json2["returntotaltaxamt"].Value<Int32>();// Int32.Parse(json2.GetValue("returntotaltaxamt").ToString());
                                                 total.MntTotal = json2["returnsubtotalwithtax"].Value<Int32>();// Int32.Parse(json2.GetValue("returnsubtotalwithtax").ToString());
-                                                total.MntNeto = total.MntTotal- total.IVA;
+                                                total.MntNeto = total.MntTotal - total.IVA;
 
                                                 DTEValidaciones(total.TasaIVA.ToString(), "TasaIVA", 6, 3);
                                                 DTEValidaciones(total.IVA.ToString(), "IVA", 18, 3);
@@ -2562,7 +2607,7 @@
                                                             det.PrcItem = jsonOperaciones["price"].Value<float>();
                                                         }
 
-                                                        
+
                                                         //Extendido
                                                         det.MontoItem = Convert.ToInt32(det.PrcItem * det.QtyItem);
 
@@ -2686,7 +2731,7 @@
                                 }
                             }
                         }
-                       // this.objLog.write("SALIMOS");
+                        // this.objLog.write("SALIMOS");
                     }
                     if (((ADirection == "FromClient") && (AHTTPVerb == "POST")) && (AResourceName.ToUpper() == "CALLDTESIGNATURETRANSFER"))
                     {
@@ -2781,7 +2826,7 @@
                                             //int neto = Int32.Parse(json2.GetValue("docpricetotal").ToString()) - iva;
                                             int iva = (json2["docpricetotal"].Value<Int32>() * Int32.Parse(this.ParamValues.DTESignature_TasaIVA)) / 100;
                                             int neto = json2["docpricetotal"].Value<Int32>() - iva;
-                                            
+
 
                                             Totals total = new Totals();
                                             DTEValidaciones(this.ParamValues.DTESignature_TasaIVA, "Tasa IVA", 6, 3);
@@ -2818,9 +2863,9 @@
                                                     }
                                                     else
                                                     {
-                                                       // float ivadet = (Int32.Parse((jsonOperaciones["price"]).ToString()) * Int32.Parse(this.ParamValues.DTESignature_TasaIVA)) / 100;
+                                                        // float ivadet = (Int32.Parse((jsonOperaciones["price"]).ToString()) * Int32.Parse(this.ParamValues.DTESignature_TasaIVA)) / 100;
                                                     }
-                                                   
+
                                                     //float montoitem = (float)((Int32.Parse(precio) * Convert.ToDouble(cantidad)) - (ivadet * Convert.ToDouble(cantidad)));
                                                     //float preciosiniva = (Int32.Parse(precio) - ivadet);
                                                     //cantidad = cantidad.Replace(',', '.');
@@ -2899,7 +2944,7 @@
                                                 num = 200;
                                                 string[] textArray5 = new string[] { "{\"Estatus\":" + "\"" + status + "\"," + "\"FolioNo\":" + "\"" + folio + "\"," + "\"MsgEstatus\":" + "\"" + msg + "\"," + "\"TED\":" + "\"" + tedbase64 + "\"" + "}" };
                                                 str = string.Concat(textArray5);
-                                                this.objLog.write("ProcessEvent** Error: " +  msg);
+                                                this.objLog.write("ProcessEvent** Error: " + msg);
                                             }
                                         }
                                         catch (Exception e)
@@ -2925,7 +2970,7 @@
                                 }
                             }
                         }
-                       // this.objLog.write("SALIMOS");
+                        // this.objLog.write("SALIMOS");
                     }
                     if (((ADirection == "FromClient") && (AHTTPVerb == "POST")) && (AResourceName.ToUpper() == "CALLDTESIGNATUREVOUCHER"))
                     {
@@ -3028,7 +3073,7 @@
                                                     //det.MontoItem = Convert.ToInt32(montoitem);
                                                     //det.CdgItems.Add(new Cdgitem("INTERNO", (jsonOperaciones["alu"]).ToString()));
                                                     //DTEValidaciones(jsonOperaciones["alu"].ToString(), "Valor Código", 35, 1);
-                                                                                               
+
                                                     det.NroLinDet = contadordetalle + 1;
                                                     det.NmbItem = (jsonOperaciones["description1"]).ToString();
                                                     det.DscItem = (jsonOperaciones["description1"]).ToString();
@@ -3163,9 +3208,9 @@
                         string xmlres = string.Empty;
                         string ted = string.Empty;
                         string tedbase64 = string.Empty;
-                       // this.objLog.write("ImpresoraOPOS resImpresion");
+                        // this.objLog.write("ImpresoraOPOS resImpresion");
                         ImpresoraOPOS resImpresion = new ImpresoraOPOS();
-                       // this.objLog.write("JObject obj3 in");
+                        // this.objLog.write("JObject obj3 in");
                         foreach (JObject obj3 in JArray.Parse("[" + message.Payload + "]").Children<JObject>())
                         {
                             foreach (JProperty property in obj3.Properties())
@@ -3198,7 +3243,7 @@
 
 
                                         string idcliente = Convert.ToString(json2.GetValue("btcuid"));
-                                        this.objLog.write("Cargar cliente "+ idcliente);
+                                        this.objLog.write("Cargar cliente " + idcliente);
                                         JObject jsoncustomer = null;
                                         JObject jsoncustomer2 = null;
                                         JArray jsoncustomerRest1 = null;
@@ -3227,13 +3272,13 @@
                                             }
 
                                             this.objLog.write("CreaDocumentoElectronico");
-                                            this.objLog.write("jsoncustomerRest "+ jsoncustomerRest);
+                                            this.objLog.write("jsoncustomerRest " + jsoncustomerRest);
                                             /*Esta linea debe ser comentada una vez que se finalice la regeneracion de ventas de SILFA*/
                                             decimal id_reinyeccion = Convert.ToDecimal(str21) - 50000000000000000;
                                             str21 = id_reinyeccion.ToString();
                                             this.objLog.write("SID de regeneracion " + str21);
                                             dbNetDTE.CreaDocumentoElectronico(json2, str21, message, jsoncustomerRest, jsonreferencia, out str);
-                                            this.objLog.write("pase CreaDocumentoElectronico "+ str);
+                                            this.objLog.write("pase CreaDocumentoElectronico " + str);
                                             flag2 = false;
                                             num = 200;
                                         }
@@ -3251,11 +3296,11 @@
                                 }
                             }
                         }
-                     //   this.objLog.write("SALIMOS");
+                        //   this.objLog.write("SALIMOS");
                     }
                     if (((ADirection == "FromClient") && (AHTTPVerb == "POST")) && (AResourceName.ToUpper() == "CALLDTEDBNETTRANSFER"))
                     {
-                      //  this.objLog.write("ENTRAMOS");
+                        //  this.objLog.write("ENTRAMOS");
 
                         str18 = "";
                         str19 = "";
@@ -3555,7 +3600,7 @@
                                 }
                             }
                         }
-                       // this.objLog.write("SALIMOS");
+                        // this.objLog.write("SALIMOS");
                     }
                     if (((ADirection == "FromClient") && (AHTTPVerb == "POST")) && (AResourceName.ToUpper() == "CALLDTEGETONE"))
                     {
@@ -3633,7 +3678,7 @@
                                                 //RECEPTOR
                                                 this.objLog.writeDTEGetOne($"Cargando Receptor");
                                                 string nombrecliente = jsoncustomerRest.GetValue("first_name").ToString() + " " + jsoncustomerRest.GetValue("last_name").ToString();
-                                                if(nombrecliente == "")
+                                                if (nombrecliente == "")
                                                 {
                                                     goDoc.RazonSocialReceptor = this.ParamValues.DTEGetOne_NombreClientedefault;
                                                     goDoc.RutReceptor = this.ParamValues.DTEGetOne_RutReceptordefault;
@@ -4644,7 +4689,7 @@
                         }
                         this.objLog.write("SALIMOS");
                     }
-					if (((ADirection == "FromClient") && (AHTTPVerb == "POST")) && (AResourceName.ToUpper() == "CALLDTEFACELE"))
+                    if (((ADirection == "FromClient") && (AHTTPVerb == "POST")) && (AResourceName.ToUpper() == "CALLDTEFACELE"))
                     {
                         this.objLog.write("INICIO  CALLDTEFACELE");
                         str18 = "";
@@ -4821,7 +4866,7 @@
                                                         }
                                                         if (!"5".Equals(kitflag))
                                                         {
-                                                            if((jsonOperaciones["itemtype"]).ToString() == "2")
+                                                            if ((jsonOperaciones["itemtype"]).ToString() == "2")
                                                             {
                                                                 //string _precio = Decimal.Round(Convert.ToDecimal((jsonOperaciones["price"]).ToString())).ToString();
                                                                 //string _cantidad = (jsonOperaciones["qty"]).ToString();
@@ -4896,7 +4941,7 @@
 
                                                 #endregion
                                                 #region Boleta de cambio
-                                                if(Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString()) > 0)
+                                                if (Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString()) > 0)
                                                 {
                                                     decimal descuentoFinal = Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString());
                                                     if (aplicaDcto1Peso)
@@ -5986,15 +6031,15 @@
                 }
                 finally
                 {
-                   // this.objLog.write("FINALLY");
+                    // this.objLog.write("FINALLY");
                     ACanContinue = flag2;
                     AStatusCode = num;
                     if (!flag2)
                     {
                         APayload = str;
-                      //  this.objLog.write(APayload);
+                        //  this.objLog.write(APayload);
                     }
-                   // this.objLog.write("ProcessEvent *********** Queda a la espera de nueva trama " + ACanContinue.ToString());
+                    // this.objLog.write("ProcessEvent *********** Queda a la espera de nueva trama " + ACanContinue.ToString());
                 }
             TR_0007:;
             }
@@ -6055,9 +6100,9 @@
             base.BeginInvoke((MethodInvoker)delegate { this.txtMensaje.Text = this.txtMensaje.Text + "** Client Token **"; });
             //base.BeginInvoke(new Action(() => { this.txtMensaje.Text = this.txtMensaje.Text + "** Client Token **"; }));
             //base.BeginInvoke(() => this.txtMensaje.Text = this.txtMensaje.Text + "** Client Token **"); ORIGINAL DEL DESCOMPILADOR
-           // this.objLog.write("    ProcessClientToken ->ok");
+            // this.objLog.write("    ProcessClientToken ->ok");
         }
-         
+
 
         #region Procesos Genericos Proxy
         static string UnicodeToUTF8(string from)
@@ -6305,13 +6350,13 @@
         public bool AbrirPuerto()
         {
             string str3 = string.Empty;
-          //  this.objLog.writeTB("\t" + MethodBase.GetCurrentMethod().Name + "***** INICIO");
+            //  this.objLog.writeTB("\t" + MethodBase.GetCurrentMethod().Name + "***** INICIO");
             bool flag = true;
             string str = ConfigurationManager.AppSettings["PINPADBaudRate"];
             string str2 = ConfigurationManager.AppSettings["PINPADCOMPorNumber"];
             bool flag2 = false;
             string[] textArray1 = new string[] { "\t", MethodBase.GetCurrentMethod().Name, "DEL CONFIG * PORT: ", str2, "* Boud Rate: ", str };
-          //  this.objLog.writeTB(string.Concat(textArray1));
+            //  this.objLog.writeTB(string.Concat(textArray1));
             if ((str != string.Empty) && (str2 != string.Empty))
             {
                 flag = false;
@@ -6356,7 +6401,7 @@
             this.comPort.PortName = "COM" + str3;
 
             int PINPADTimeOut = 60000;// timeout para PINPAD integrado
-            if(ConfigurationManager.AppSettings["PINPADTimeOut"] != null && ConfigurationManager.AppSettings["PINPADTimeOut"] == "")
+            if (ConfigurationManager.AppSettings["PINPADTimeOut"] != null && ConfigurationManager.AppSettings["PINPADTimeOut"] == "")
             {
                 PINPADTimeOut = int.Parse(ConfigurationManager.AppSettings["PINPADTimeOut"]);
             }
@@ -6504,7 +6549,7 @@
             {
                 throw new PinpadException(jPayload);
             }
-           // this.objLog.writeTB("\t" + MethodBase.GetCurrentMethod().Name + "***** FIN");
+            // this.objLog.writeTB("\t" + MethodBase.GetCurrentMethod().Name + "***** FIN");
             return flag;
         }
 
@@ -7423,7 +7468,7 @@
                             {
                                 this.objLog.writeTB("\t" + MethodBase.GetCurrentMethod().Name + "***** REQUEST - ACK - " + this.lblInv_Sid);
                                 this.comPort.Write('\x0006'.ToString());
-                               
+
                             }
                             else
                             {
@@ -7976,7 +8021,7 @@
 
         public string doPRISMLogin(Log objLog)
         {
-          //  objLog.write(this.ParamValues.PRISMURL);
+            //  objLog.write(this.ParamValues.PRISMURL);
             string str = "";
             HttpClient client = new HttpClient
             {
@@ -7987,7 +8032,7 @@
             if (!result.IsSuccessStatusCode)
             {
                 object[] objArray1 = new object[] { "Error LOGIN Auth-Nonce: ", result.StatusCode, ", ", result.ReasonPhrase };
-               // objLog.write(string.Concat(objArray1));
+                // objLog.write(string.Concat(objArray1));
             }
             else
             {
@@ -8011,9 +8056,9 @@
                         BaseAddress = new Uri(this.ParamValues.PRISMURL + "/v1/rest/auth"),
                         DefaultRequestHeaders = { Accept = { new MediaTypeWithQualityHeaderValue("application/json") } }
                     };
-                   // objLog.write(this.ParamValues.PRISMURL + "/v1/rest/auth");
-                   // objLog.write("Auth-Nonce = " +str3);
-                   // objLog.write("Auth-Nonce-Response" + str4);
+                    // objLog.write(this.ParamValues.PRISMURL + "/v1/rest/auth");
+                    // objLog.write("Auth-Nonce = " +str3);
+                    // objLog.write("Auth-Nonce-Response" + str4);
                     client2.DefaultRequestHeaders.Add("Auth-Nonce", str3);
                     client2.DefaultRequestHeaders.Add("Auth-Nonce-Response", str4);
                     HttpResponseMessage message2 = client2.GetAsync("?usr=" + this.ParamValues.PRISMUser + "&pwd=" + this.ParamValues.PRISMPwd).Result;
@@ -8026,7 +8071,7 @@
                         IEnumerable<string> enumerable2;
                         if (message2.Headers.TryGetValues("Auth-Session", out enumerable2))
                         {
-                         //   objLog.write(str);
+                            //   objLog.write(str);
                             str = enumerable2.First<string>();
 
                         }
@@ -8034,7 +8079,7 @@
                     }
                 }
             }
-          //  objLog.write("Session = "+str);
+            //  objLog.write("Session = "+str);
             return str;
         }
 
@@ -8042,15 +8087,15 @@
         public string doPRISMLoginAux(Log objLog)
         {
             string str = "";
-           // objLog.write("estoy en doPRISMLoginAux");
+            // objLog.write("estoy en doPRISMLoginAux");
             HttpClient client = new HttpClient
             {
                 BaseAddress = new Uri(this.ParamValues.PRISMURL + "/v1/rest/auth"),
                 DefaultRequestHeaders = { Accept = { new MediaTypeWithQualityHeaderValue("application/json") } }
             };
             HttpResponseMessage result = client.GetAsync("").Result;
-           // objLog.write("ejecute la siguiente URL "+ this.ParamValues.PRISMURL + "/v1/rest/auth");
-           // objLog.write("la llamada devuelve "+ result.IsSuccessStatusCode);
+            // objLog.write("ejecute la siguiente URL "+ this.ParamValues.PRISMURL + "/v1/rest/auth");
+            // objLog.write("la llamada devuelve "+ result.IsSuccessStatusCode);
             if (!result.IsSuccessStatusCode)
             {
                 object[] objArray1 = new object[] { "Error LOGIN Auth-Nonce: ", result.StatusCode, ", ", result.ReasonPhrase };
@@ -8058,7 +8103,7 @@
             }
             else
             {
-               // objLog.write("Voy a procesar el Auth-Nonce ");
+                // objLog.write("Voy a procesar el Auth-Nonce ");
                 IEnumerable<string> enumerable;
                 string str3 = "";
 
@@ -8082,8 +8127,8 @@
                     client2.DefaultRequestHeaders.Add("Auth-Nonce", str3);
                     client2.DefaultRequestHeaders.Add("Auth-Nonce-Response", str4);
                     HttpResponseMessage message2 = client2.GetAsync("?usr=" + this.ParamValues.PRISMUser + "&pwd=" + this.ParamValues.PRISMPwd).Result;
-                    objLog.write(this.ParamValues.PRISMURL + "/v1/rest/auth"+ "?usr=" + this.ParamValues.PRISMUser + "&pwd=" + this.ParamValues.PRISMPwd);
-                    objLog.write("estatus llamado "+ message2.IsSuccessStatusCode);
+                    objLog.write(this.ParamValues.PRISMURL + "/v1/rest/auth" + "?usr=" + this.ParamValues.PRISMUser + "&pwd=" + this.ParamValues.PRISMPwd);
+                    objLog.write("estatus llamado " + message2.IsSuccessStatusCode);
                     if (!message2.IsSuccessStatusCode)
                     {
                         objLog.write("Error LOGIN buscando Token: " + message2.StatusCode.ToString() + ", " + message2.ReasonPhrase);
@@ -8093,7 +8138,7 @@
                         IEnumerable<string> enumerable2;
                         if (message2.Headers.TryGetValues("Auth-Session", out enumerable2))
                         {
-                           // objLog.write(str);
+                            // objLog.write(str);
                             str = enumerable2.First<string>();
 
                         }
@@ -8119,14 +8164,14 @@
                     }
                 }
             }
-           // objLog.write("token " + str);
+            // objLog.write("token " + str);
             return str;
         }
 
         public string doPRISMLoginCentral(Log objLog)
         {
             string str = "";
-            objLog.write("estoy en doPRISMLoginCentral "+ this.ParamValues.PRISMURLForReferencia + "/v1/rest/auth");
+            objLog.write("estoy en doPRISMLoginCentral " + this.ParamValues.PRISMURLForReferencia + "/v1/rest/auth");
             HttpClient client = new HttpClient
             {
                 BaseAddress = new Uri(this.ParamValues.PRISMURLForReferencia + "/v1/rest/auth"),
@@ -8483,7 +8528,7 @@
             {
                 respuesta = "{\"data\":[{\"info1\": \"\",\"info2\": \"\", \"fullname\": \"\",\"notes\": \"\"}]}";
             }
-           
+
             return respuesta;
         }
 
@@ -8495,7 +8540,7 @@
             {
                 try
                 {
-                   // objLog.write(this.ParamValues.PRISMURL + "/v1/rest/customer/" + idCustomer + "?cols=*,address.*");
+                    // objLog.write(this.ParamValues.PRISMURL + "/v1/rest/customer/" + idCustomer + "?cols=*,address.*");
                     var client = new RestClient(this.ParamValues.PRISMURL + "/v1/rest/customer/" + idCustomer + "?cols=*,address.*");
                     var request = new RestRequest(Method.GET);
                     client.Timeout = -1;
@@ -8503,8 +8548,8 @@
                     request.AddHeader("Accept", "application/json, version=2");
                     request.AddHeader("Content-Type", "application/json; charset=utf-8");
                     IRestResponse response = client.Execute(request);
-                    
-                    if (response.StatusCode != HttpStatusCode.OK) 
+
+                    if (response.StatusCode != HttpStatusCode.OK)
                     {
                         //objLog.write("error");
                         //objLog.write(response.Content);
@@ -8526,7 +8571,7 @@
             {
                 respuesta = "[{\"info1\": \"\",\"info2\": \"\", \"fullname\": \"\",\"notes\": \"\",\"first_name\": \"\",\"last_name\": \"\",\"primary_address_line_1\": \"\",\"primary_address_line_2\": \"\",\"primary_address_line_3\": \"\",\"primary_address_line_4\": \"\",\"primary_address_line_5\": \"\",\"primary_address_line_6\": \"\",\"email_address\": \"\"}]";
             }
-           // objLog.write("respuesta cliente :" + respuesta);
+            // objLog.write("respuesta cliente :" + respuesta);
             return respuesta;
         }
 
@@ -8609,7 +8654,7 @@
         {
             string respuesta = string.Empty;
             objLog.write("llegue a : GETDocument");
-            objLog.write("el token es : "+ token);
+            objLog.write("el token es : " + token);
             try
             {
                 objLog.write(this.ParamValues.PRISMURL + "/api/backoffice/document/" + idTransaccion + "?cols=*,docitem.*");
@@ -8680,7 +8725,7 @@
             {
                 try
                 {
-                    var client = new RestClient(this.ParamValues.PRISMURL + "/api/common/store?cols=*&filter=storeno,eq,"+ idStore);
+                    var client = new RestClient(this.ParamValues.PRISMURL + "/api/common/store?cols=*&filter=storeno,eq," + idStore);
                     var request = new RestRequest(Method.GET);
                     client.Timeout = -1;
                     request.AddHeader("Auth-Session", token);
@@ -8717,7 +8762,7 @@
             {
                 try
                 {
-                    var client = new RestClient(url+ "?cols=*");
+                    var client = new RestClient(url + "?cols=*");
                     var request = new RestRequest(Method.GET);
                     client.Timeout = -1;
                     request.AddHeader("Auth-Session", token);
