@@ -786,15 +786,15 @@
                                                                 string cantidad = (jsonOperaciones["qty"]).ToString();
                                                                 cantidad = cantidad.Replace(',', '.');
                                                                 plantdet = plantdet.Replace("#QTYITEM#", cantidad);
-                                                                string iva = (jsonOperaciones["taxamt"]).ToString().Split(',')[0];
+                                                                string iva = (jsonOperaciones["taxamt"]).ToString();
                                                                 string precio = (jsonOperaciones["price"]).ToString();
                                                                 string cantidad_decimal = cantidad.Replace(".", ",");
-                                                                double montoitem = ((Int32.Parse(precio) * Convert.ToDouble(cantidad_decimal)) - (Int32.Parse(iva) * Convert.ToDouble(cantidad_decimal)));
+                                                                double montoitem = ((Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal)) - (Convert.ToDouble(iva) * Convert.ToDouble(cantidad_decimal)));
                                                                 plantdet = plantdet.Replace("#MONTOITEM#", Decimal.Round(Convert.ToDecimal(montoitem.ToString())).ToString());
                                                                 monto_neto_suma_detalle = monto_neto_suma_detalle + Decimal.Round(Convert.ToDecimal(montoitem.ToString()));
                                                                 string precioori = (jsonOperaciones["origprice"]).ToString();
-                                                                int preciosiniva = (Int32.Parse(precioori) - Int32.Parse(iva));
-                                                                plantdet = plantdet.Replace("#PRCITEM#", preciosiniva.ToString());
+                                                                decimal preciosiniva = (Convert.ToDecimal(precioori) - Convert.ToDecimal(iva));
+                                                                plantdet = plantdet.Replace("#PRCITEM#", Decimal.Round(preciosiniva).ToString());
                                                                 DTEValidaciones(preciosiniva.ToString(), "Precio Item", 19, 2);
                                                                 try
                                                                 {
