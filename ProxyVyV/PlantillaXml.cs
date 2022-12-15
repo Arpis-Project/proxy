@@ -66,7 +66,6 @@ namespace ProxyVyV.ProxyVyV
 													"</Totales>" +
 												"</Encabezado>" +
 												"#DETALLE#" +
-												"#DCT_GLOBAL#" +
 											"</Documento>" +
 										"</DTE>" +
 									"</SetDTE>" +
@@ -131,7 +130,8 @@ namespace ProxyVyV.ProxyVyV
 									  "</Totales>" +
 								  "</Encabezado>" +
 									"#DETALLE#"+
-									"#REFERENCIA#"+
+									"#DCT_GLOBAL#" +
+									"#REFERENCIA#" +
 								  "</Documento>" +
 								"</DTE>";
 			return plantillacab;
@@ -306,6 +306,20 @@ namespace ProxyVyV.ProxyVyV
 										"<FchRef>#FCHREF#</FchRef>" +
 										"<CodRef>#CODREF#</CodRef>" +
 									"</Referencia>";
+			return plantillaref;
+		}
+
+		public string PlantillaDescuentoGlobal()
+		{
+			string plantillaref = "<descg>" +
+										"<Tipo>DESCG</NroLinRef>" +
+										"<NroLinDR>1</TpoDocRef>" +
+										"<TpoMov>D</FolioRef>" +
+										"<GlosaDR>Descuento</FchRef>" +
+										"<TpoValor>$</CodRef>" +
+										"<ValorDR>#VALOR_DCT_GLOBAL#</CodRef>" +
+										"<IndExeDR>0</CodRef>" +
+									"</descg>";
 			return plantillaref;
 		}
 
