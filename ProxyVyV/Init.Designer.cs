@@ -345,7 +345,7 @@
                     {
                         this.objLog.write("INICIO  CALLDTEVYV");
                         str18 = "";
-                        str19 = "";
+                        str19 = ""; 
                         str20 = "";
                         str21 = "";
                         string validacion = string.Empty;
@@ -437,7 +437,7 @@
                                                 //CARATULA
                                                 plant = plant.Replace("#RUTEMISOR#", DTEVyV_RutEmisor);
                                                 plant = plant.Replace("#RUTENVIA#", DTEVyV_RutEmisor);
-                                                plant = plant.Replace("#RUTRECEPTOR#", numdoccliente);
+                                                plant = plant.Replace("#RUTRECEPTOR#", numdoccliente.ToUpper());
                                                 DTEValidaciones(numdoccliente, "Rut Receptor", 10,1);
                                                 plant = plant.Replace("#FECHARESOL#", this.ParamValues.DTEVyV_FechaResol);
                                                 plant = plant.Replace("#NUMRESOL#", this.ParamValues.DTEVyV_NumResol);
@@ -502,11 +502,12 @@
                                                 #region Creacion Xml Detalle
                                                 string strjson3 = json2.GetValue("docitem").ToString();
                                                 JArray jsonArray = JArray.Parse(strjson3);
-
+                                                int contadorLinea = 0;
                                                 foreach (JObject jsonOperaciones in jsonArray.Children<JObject>())
                                                 {
                                                     if (contadordetalle < 61)
                                                     {
+                                                        contadorLinea = contadorLinea + 1;
                                                         if ((jsonOperaciones["itemtype"]).ToString() != "2")
                                                         {
                                                             string kitflag = "0";
@@ -523,7 +524,7 @@
                                                                 string descuento = string.Empty;
                                                                 plantilla = new PlantillaXml();
                                                                 plantdet = plantdet + this.plantilla.PlantillaDetBoleta();
-                                                                plantdet = plantdet.Replace("#NROLINDET#", (jsonOperaciones["itempos"]).ToString());
+                                                                plantdet = plantdet.Replace("#NROLINDET#", contadorLinea.ToString());
                                                                 plantdet = plantdet.Replace("#TPOCODIGO#", "INTERNO");
                                                                 plantdet = plantdet.Replace("#VLRCODIGO#", (jsonOperaciones["alu"]).ToString());
                                                                 DTEValidaciones(jsonOperaciones["alu"].ToString(), "Valor Código", 35, 1);
@@ -544,20 +545,21 @@
                                                                 plantdet = plantdet.Replace("#QTYITEM#", cantidad);
                                                                 plantdet = plantdet.Replace("#UNMDITEM#", "Un.");
                                                                 string iva = (jsonOperaciones["taxamt"]).ToString();
+                                                                string precio_original = Decimal.Round(Convert.ToDecimal((jsonOperaciones["origprice"]).ToString())).ToString();
                                                                 string precio = Decimal.Round(Convert.ToDecimal((jsonOperaciones["price"]).ToString())).ToString();
                                                                 //int montoitem = ((Int32.Parse(precio) * Int32.Parse(cantidad)) - (Int32.Parse(iva) * Int32.Parse(cantidad)));
                                                                 string cantidad_decimal = cantidad.Replace(".", ",");
-                                                                double montoitem = (Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal));
-                                                                if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
+                                                                double montoitem = (Convert.ToDouble(precio_original) * Convert.ToDouble(cantidad_decimal));
+                                                               /* if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
                                                                 {                                                                    
-                                                                    precio = Math.Round(Convert.ToDouble(precio)  - Convert.ToDouble(precio) * (Convert.ToDouble(porc_descuento_global) / 100)).ToString();
+                                                                    precio = Math.Round(Convert.ToDouble(precio_original)  - Convert.ToDouble(precio_original) * (Convert.ToDouble(porc_descuento_global) / 100)).ToString();
                                                                     montoitem = (Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal));
 
                                                                 }
+                                                               */
 
-                                                                plantdet = plantdet.Replace("#PRCITEM#", precio);
-                                                                DTEValidaciones(Decimal.Round(Convert.ToDecimal((precio).ToString())).ToString(), "Precio Item", 19, 2);
-                                                                plantdet = plantdet.Replace("#MONTOITEM#", Decimal.Round(Convert.ToDecimal(montoitem.ToString())).ToString());
+                                                                plantdet = plantdet.Replace("#PRCITEM#", precio_original);
+                                                                DTEValidaciones(Decimal.Round(Convert.ToDecimal((precio_original).ToString())).ToString(), "Precio Item", 19, 2);
 
                                                                 try
                                                                 {
@@ -576,11 +578,13 @@
                                                                             descuento_decimal = descuento_decimal * -1;
                                                                             descuento = descuento_decimal.ToString();
                                                                         }
+                                                                        plantdet = plantdet.Replace("#MONTOITEM#", Decimal.Round(Convert.ToDecimal(montoitem.ToString()) - Convert.ToDecimal(descuento)).ToString());
                                                                         descuento = "<DescuentoMonto>" + descuento + "</DescuentoMonto></Detalle>";
                                                                         plantdet = plantdet.Replace("#DESCUENTO#", descuento);
                                                                     }
                                                                     else
                                                                     {
+                                                                        plantdet = plantdet.Replace("#MONTOITEM#", Decimal.Round(Convert.ToDecimal(montoitem.ToString())).ToString());
                                                                         descuento = "</Detalle>";
                                                                         plantdet = plantdet.Replace("#DESCUENTO#", descuento);
                                                                     }
@@ -603,9 +607,11 @@
                                                 }
                                                 plant = plant.Replace("#DETALLE#", plantdet);
                                                 //agregar referencia de cliente cuando tenga correo.
-                                               
+                                                this.objLog.writeDTEVyV("Validando si corresponde llenar el segmento DscRcgGlobal" );
+
                                                 if(Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString()) > 0)
                                                 {
+                                                    this.objLog.writeDTEVyV("Entre a returnsubtotal");
                                                     decimal descuentoFinal = Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString());
                                                     if (aplicaDcto1Peso)
                                                     {
@@ -622,7 +628,25 @@
                                                 }
                                                 else
                                                 {
-                                                    plant = plant.Replace("#DCT_GLOBAL#", "");
+                                                    this.objLog.writeDTEVyV("Entre a doumento sin devolucion");
+                                                    if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
+                                                    {
+                                                        this.objLog.writeDTEVyV("Entre a doumento con DscRcgGlobal");
+                                                        plant = plant.Replace("#DCT_GLOBAL#", "<DscRcgGlobal>" +
+                                                                                          "<NroLinDR>1</NroLinDR>" +
+                                                                                          "<TpoMov>D</TpoMov>" +
+                                                                                          "<GlosaDR>descuento transaccion</GlosaDR>" +
+                                                                                          "<TpoValor>$</TpoValor>" +
+                                                                                          "<ValorDR>" + monto_descuento_global + "</ValorDR>" +
+                                                                                          "</DscRcgGlobal> ");
+
+                                                    }
+                                                    else
+                                                    {
+                                                        this.objLog.writeDTEVyV("Entre a doumento sin DscRcgGlobal");
+                                                        plant = plant.Replace("#DCT_GLOBAL#", "");
+                                                    }
+                                                    
                                                 }
 
                                                 #endregion
@@ -1062,11 +1086,13 @@
                                                 string strjson3 = json2.GetValue("docitem").ToString();
                                                     JArray jsonArray = JArray.Parse(strjson3);
                                                     Decimal monto_neto_suma_detalle = 0;
+                                                    int contadorLinea = 0;
                                                     foreach (JObject jsonOperaciones in jsonArray.Children<JObject>())
                                                     {
                                                     this.objLog.writeDTEVyV(strjson3);
                                                     if (contadordetalle < 41)
                                                         {
+                                                        contadorLinea = contadorLinea + 1;
                                                         this.objLog.writeDTEVyV("Procesando Nota de Credito cont"+ contadordetalle);
                                                         string kitflag = "0";
                                                             try
@@ -1084,7 +1110,7 @@
                                                             string descuento = string.Empty;
                                                                 plantilla = new PlantillaXml();
                                                                 plantdet = plantdet + this.plantilla.PantillaDetNotaCredito();
-                                                                plantdet = plantdet.Replace("#NROLINDET#", (jsonOperaciones["itempos"]).ToString());
+                                                                plantdet = plantdet.Replace("#NROLINDET#", contadorLinea.ToString());
                                                                 plantdet = plantdet.Replace("#TPOCODIGO#", "INTERNO");
                                                                 plantdet = plantdet.Replace("#VLRCODIGO#", (jsonOperaciones["alu"]).ToString());
                                                                 DTEValidaciones(jsonOperaciones["alu"].ToString(), "Código Item", 35, 1);
@@ -1097,11 +1123,12 @@
                                                                 cantidad = cantidad.Replace(',', '.');
                                                                 plantdet = plantdet.Replace("#QTYITEM#", cantidad);
                                                                 string iva = (jsonOperaciones["taxamt"]).ToString();
+                                                                string precio_original = (jsonOperaciones["origprice"]).ToString();
                                                                 string precio = (jsonOperaciones["price"]).ToString();
                                                                 string cantidad_decimal = cantidad.Replace(".", ",");
                                                                 iva = iva.Replace(".", ",");
                                                             
-                                                                this.objLog.writeDTEVyV("Rev 1.3 "+ precio + "   "+ cantidad_decimal+ "       "+ iva+ "     "+ cantidad_decimal);
+                                                                this.objLog.writeDTEVyV("Rev 1.3 " + precio_original + "   " + precio + "   "+ cantidad_decimal+ "       "+ iva+ "     "+ cantidad_decimal);
                                                                 double montoitem = ((Convert.ToDouble(precio) * Convert.ToDouble(cantidad_decimal)) - (Convert.ToDouble(iva) * Convert.ToDouble(cantidad_decimal)));
                                                                 this.objLog.writeDTEVyV("Rev 1.3.1");
                                                                 string monto_item_calculado = Math.Round(Convert.ToDecimal(montoitem.ToString())).ToString();
@@ -1121,6 +1148,8 @@
                                                             try
                                                                 {
                                                                     descuento = (jsonOperaciones["discamt"]).ToString();
+                                                                    /*No considerar descuento en las Notas de Credito*/
+                                                                    descuento = "";
                                                                     if (descuento != string.Empty && descuento != "0")
                                                                     {
                                                                         decimal descuento_decimal = Convert.ToDecimal(descuento);
