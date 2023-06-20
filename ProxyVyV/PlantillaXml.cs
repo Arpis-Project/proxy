@@ -66,6 +66,7 @@ namespace ProxyVyV.ProxyVyV
 													"</Totales>" +
 												"</Encabezado>" +
 												"#DETALLE#" +
+												"#DCT_GLOBAL#" +
 											"</Documento>" +
 										"</DTE>" +
 									"</SetDTE>" +
