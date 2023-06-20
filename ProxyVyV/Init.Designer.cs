@@ -410,8 +410,9 @@
                                         JArray jsoncustomerRest1 = JArray.Parse(this.GETCustomerRest(idcliente, token));
                                         JObject jsoncustomerRest = JObject.Parse(jsoncustomerRest1[0].ToString());
                                         this.objLog.write("pase conversion a json de cliente");
-                                       // JObject jsoncustomer = JObject.Parse(this.GETCustomer(idcliente, token));
-                                       // JObject jsoncustomer2 = JObject.Parse(jsoncustomer.GetValue("data")[0].ToString());
+                                        // JObject jsoncustomer = JObject.Parse(this.GETCustomer(idcliente, token));
+                                        // JObject jsoncustomer2 = JObject.Parse(jsoncustomer.GetValue("data")[0].ToString());
+                                        
                                         numdoccliente = jsoncustomerRest.GetValue("info1").ToString().ToUpper();
                                         //this.objLog.write("genere el cliente");
                                         if (numdoccliente == "")
@@ -438,7 +439,8 @@
                                                 plant = plant.Replace("#RUTEMISOR#", DTEVyV_RutEmisor);
                                                 plant = plant.Replace("#RUTENVIA#", DTEVyV_RutEmisor);
                                                 plant = plant.Replace("#RUTRECEPTOR#", numdoccliente);
-                                                DTEValidaciones(numdoccliente, "Rut Receptor", 10,1);
+                                                DTEValidaciones(numdoccliente, "Rut Receptor", 10, 1);
+                                                this.objLog.write("Validando Rut Receptor: "+ numdoccliente);
                                                 plant = plant.Replace("#FECHARESOL#", this.ParamValues.DTEVyV_FechaResol);
                                                 plant = plant.Replace("#NUMRESOL#", this.ParamValues.DTEVyV_NumResol);
                                                 plant = plant.Replace("#FIRMAEVN#", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Replace(" ", "T"));
@@ -448,13 +450,17 @@
                                                 plant = plant.Replace("#INDSERVICIO#", "1");
                                                 plant = plant.Replace("#FECVENC#", DateTime.Now.ToString("yyyy-MM-dd"));
                                                 //EMISOR
+                                                this.objLog.write("Antes validando Razon Social Emisor: " + DTEVyV_RznSocEmi);
                                                 plant = plant.Replace("#RZNSOC#", DTEVyV_RznSocEmi);
                                                 DTEValidaciones(DTEVyV_RznSocEmi, "Razon Social Emisor", 100, 1);
-                                                plant = plant.Replace("#GIRO#", LargoCadenaMax(DTEVyV_Giro,80));
+                                                this.objLog.write("Validando Razon Social Emisor: "+ DTEVyV_RznSocEmi);
+                                                plant = plant.Replace("#GIRO#", LargoCadenaMax(DTEVyV_Giro,80));                                                
                                                 DTEValidaciones(LargoCadenaMax(DTEVyV_Giro, 80), "Giro Emisor", 80, 1);
+                                                this.objLog.write("Validando Giro Emisor: "+ DTEVyV_Giro);
                                                 //plant = plant.Replace("#ACTECO#", this.ParamValues.DTEVyV_ACTECO);
                                                 plant = plant.Replace("#CDGSIISUCUR#", DTEVyV_codigo_sii_sucursal);
                                                 DTEValidaciones(DTEVyV_codigo_sii_sucursal, "Sucursal Emisor", 20, 1);
+                                                this.objLog.write("Validando Sucursal Emisor: " + DTEVyV_codigo_sii_sucursal);
                                                 plant = plant.Replace("#DIRORIGEN#", DTEVyV_DirOrigen);
                                                 plant = plant.Replace("#CMNAORIGEN#", DTEVyV_CmnaOrigen);
                                                 plant = plant.Replace("#CIUDADORIGEN#", DTEVyV_CiudadOrigen);
@@ -759,11 +765,16 @@
                                                         DTEValidaciones(LargoCadenaMax(giro, 40), "Giro Receptor", 40, 2);
                                                     }
                                                     this.objLog.write("sali del giro");
+                                                    this.objLog.write("DIRRECEP: " + jsoncustomerRest.GetValue("primary_address_line_1"));
                                                     plant = plant.Replace("#DIRRECEP#", jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString());
                                                     DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_1").ToString() + " " + jsoncustomerRest.GetValue("primary_address_line_2").ToString(), "Dirección Receptor", 70, 2);
+                                                   
                                                     plant = plant.Replace("#CMNARECEP#", jsoncustomerRest.GetValue("primary_address_line_4").ToString());
+                                                    this.objLog.write("CMNARECEP: " + jsoncustomerRest.GetValue("primary_address_line_4"));
                                                     DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_4").ToString(), "Comuna Receptor", 20, 1);
+                                                    
                                                     plant = plant.Replace("#CIUDADRECEP#", jsoncustomerRest.GetValue("primary_address_line_5").ToString());
+                                                    this.objLog.write("CIUDADRECEP: " + jsoncustomerRest.GetValue("primary_address_line_5"));
                                                     DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_5").ToString(), "Ciudad Receptor", 20, 1);
                                                     this.objLog.write("llegue a los totales");
                                                     //TOTALES
@@ -8460,7 +8471,7 @@
                     }
                 }
             }
-
+            this.objLog.writeDTEVyV("mensaje metodo DTEValidaciones de tipo : " + tipo + " mensaje: " + msg);
             if (msg != "OK")
             {
                 throw new ApplicationException(msg);
@@ -8757,7 +8768,7 @@
             {
                 try
                 {
-                    var client = new RestClient(this.ParamValues.PRISMURL + "/api/common/store?cols=*&filter=storeno,eq,"+ idStore);
+                    var client = new RestClient(this.ParamValues.PRISMURL + "/api/common/store?cols=*&filter=(storeno,eq,"+ idStore + ")AND(active,eq,true)");
                     var request = new RestRequest(Method.GET);
                     client.Timeout = -1;
                     request.AddHeader("Auth-Session", token);
@@ -8783,7 +8794,8 @@
             {
                 respuesta = "{\"data\":[{}]}";
             }
-
+            this.objLog.write("store: "+ idStore);
+            this.objLog.write("objeto: " + respuesta);
             return respuesta;
         }
 
