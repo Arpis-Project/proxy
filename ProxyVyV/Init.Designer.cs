@@ -737,11 +737,7 @@ namespace ProxyVyV.ProxyVyV
                                                     plantilla = new PlantillaXml();
                                                     plant = this.plantilla.PantillaCabFactura();
                                                     #region Creacion de XML Cabecera
-                                                    //this.objLog.write("llegue al documento");
-                                                    //DOCUMENTO
-                                                    //plant = plant.Replace("#DOCUMENTOID#", "R" + this.ParamValues.DTEVyV_RutEmisor + "T" + posflag + "F" + folio);
                                                     plant = plant.Replace("#TPODTE#", posflag);
-                                                    //plant = plant.Replace("#FOLIO#", folio);
                                                     plant = plant.Replace("#FECEMISION#", DateTime.Now.ToString("yyyy-MM-dd"));
                                                     plant = plant.Replace("#FECVENC#", DateTime.Now.ToString("yyyy-MM-dd"));
                                                     //this.objLog.write("llegue al emisor");
@@ -802,21 +798,40 @@ namespace ProxyVyV.ProxyVyV
                                                     DTEValidaciones(jsoncustomerRest.GetValue("primary_address_line_5").ToString(), "Ciudad Receptor", 20, 1);
                                                     this.objLog.write("llegue a los totales");
                                                     //TOTALES
-                                                   //el monto neto se calculara en base a la sumatario de cada Item
-                                                   // int neto = Int32.Parse(json2.GetValue("saletotalamt").ToString()) - Int32.Parse(json2.GetValue("saletotaltaxamt").ToString());
-                                                   // plant = plant.Replace("#MNTNETO#", neto.ToString());
-                                                  // DTEValidaciones(neto.ToString(), "Monto Neto", 18, 3);
                                                     plant = plant.Replace("#MNTEXE#", "0");
                                                     plant = plant.Replace("#TASAIVA#", this.ParamValues.DTEVyV_TasaIVA);
                                                     DTEValidaciones(this.ParamValues.DTEVyV_TasaIVA, "Tasa IVA", 6, 3);
-                                                    plant = plant.Replace("#IVA#", json2.GetValue("saletotaltaxamt").ToString());
-                                                    DTEValidaciones(json2.GetValue("saletotaltaxamt").ToString(), "IVA", 18, 3);
-                                                    plant = plant.Replace("#MNTTOTAL#", json2.GetValue("saletotalamt").ToString());
-                                                    DTEValidaciones(json2.GetValue("saletotalamt").ToString(), "Monto Total", 18, 3);
-                                                    //this.objLog.write("sali del total");
-                                                    #endregion
-                                                    #region Creacion Xml Detalle
-                                                    string strjson3 = json2.GetValue("docitem").ToString();
+
+                                                    int neto = 0;
+                                                    if (Convert.ToDecimal(json2.GetValue("saletotalamt").ToString()) - Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString()) <= 1)
+                                                    {
+                                                        plant = plant.Replace("#MNTEXE#", "");
+                                                        plant = plant.Replace("#IVA#", "");
+                                                        plant = plant.Replace("#MNTTOTAL#", "1");
+                                                        plant = plant.Replace("#MNTNETO#", "1");
+                                                    }
+                                                    else
+                                                    {
+                                                        decimal var_saletotaltaxamt = Convert.ToDecimal(json2.GetValue("saletotaltaxamt").ToString());
+                                                        decimal var_returntax1amt = Convert.ToDecimal(json2.GetValue("returntax1amt").ToString());
+                                                        decimal var_saletotalamt = Convert.ToDecimal(json2.GetValue("saletotalamt").ToString());
+                                                        decimal var_returnsubtotal = Convert.ToDecimal(json2.GetValue("returnsubtotal").ToString());
+
+                                                        plant = plant.Replace("#MNTEXE#", "<MntExe>0</MntExe>");
+                                                        plant = plant.Replace("#IVA#", Decimal.Round(var_saletotaltaxamt - var_returntax1amt).ToString() );
+                                                        DTEValidaciones(Decimal.Round(var_saletotaltaxamt - var_returntax1amt).ToString(), "IVA", 18, 1);
+                                                        plant = plant.Replace("#MNTTOTAL#", Decimal.Round(var_saletotalamt - var_returnsubtotal).ToString());
+                                                        DTEValidaciones(Decimal.Round(var_saletotalamt - var_returnsubtotal).ToString(), "Monto Total", 18, 1);
+                                                        neto = Int32.Parse(Decimal.Round(var_saletotalamt - var_returnsubtotal).ToString()) - Int32.Parse(Decimal.Round(var_saletotaltaxamt - var_returntax1amt).ToString());
+                                                        plant = plant.Replace("#MNTNETO#", neto.ToString());
+                                                        DTEValidaciones(neto.ToString(), "Monto Neto", 18, 1);
+
+                                                      }
+
+                                                //this.objLog.write("sali del total");
+                                                #endregion
+                                                #region Creacion Xml Detalle
+                                                string strjson3 = json2.GetValue("docitem").ToString();
                                                     JArray jsonArray = JArray.Parse(strjson3);
                                                     //this.objLog.write("entrare al detalle");
                                                     Decimal monto_neto_suma_detalle = 0;
@@ -850,21 +865,28 @@ namespace ProxyVyV.ProxyVyV
                                                                 plantdet = plantdet.Replace("#QTYITEM#", cantidad);
                                                                 string iva = (jsonOperaciones["taxamt"]).ToString();
                                                                 string precio = (jsonOperaciones["price"]).ToString();
+                                                                string ivaori = (jsonOperaciones["origtaxamt"]).ToString();
                                                                 string precioori = (jsonOperaciones["origprice"]).ToString();
-                                                                Double preciosiniva = Math.Round(Convert.ToDouble(precioori) - Convert.ToDouble(iva));
+                                                                Double preciosiniva = Math.Round(Convert.ToDouble(precioori) - Convert.ToDouble(ivaori));
                                                                 string cantidad_decimal = cantidad.Replace(".", ",");
                                                                 double montoitem = ((Int32.Parse(precio) * Convert.ToDouble(cantidad_decimal)) - (Convert.ToDouble(iva) * Convert.ToDouble(cantidad_decimal)));
 
-                                                                if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
-                                                                {
+                                                            /* if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
+                                                             {
 
-                                                                    preciosiniva = Math.Round(preciosiniva - (preciosiniva * (Convert.ToDouble(porc_descuento_global) / 100)));
-                                                                    montoitem = Math.Round((preciosiniva * Convert.ToDouble(cantidad_decimal)));
-                                                                }
+                                                                 preciosiniva = Math.Round(preciosiniva - (preciosiniva * (Convert.ToDouble(porc_descuento_global) / 100)));
+                                                                 montoitem = Math.Round((preciosiniva * Convert.ToDouble(cantidad_decimal)));
+                                                             }
+                                                            */
 
+                                                            this.objLog.write("iva --> " + iva);
+                                                            this.objLog.write("precio --> " + precio);
+                                                            this.objLog.write("precioori --> " + precioori);
+                                                            this.objLog.write("preciosiniva --> " + preciosiniva);
+                                                            this.objLog.write("cantidad_decimal --> " + cantidad_decimal);
+                                                            this.objLog.write("montoitem --> " + montoitem);
 
-                                                                
-                                                                monto_neto_suma_detalle = monto_neto_suma_detalle + Decimal.Round(Convert.ToDecimal(montoitem.ToString()));
+                                                            monto_neto_suma_detalle = monto_neto_suma_detalle + Decimal.Round(Convert.ToDecimal(montoitem.ToString()));
 
                                                                 plantdet = plantdet.Replace("#MONTOITEM#", Decimal.Round(Convert.ToDecimal(montoitem.ToString())).ToString());
                                                                 plantdet = plantdet.Replace("#PRCITEM#", preciosiniva.ToString());
@@ -879,9 +901,10 @@ namespace ProxyVyV.ProxyVyV
                                                                     if (descuento != string.Empty && descuento != "0")
                                                                     {
                                                                         decimal descuento_decimal = Convert.ToDecimal(descuento);
+                                                                        this.objLog.write("descuento_decimal --> " + descuento_decimal);
                                                                         if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
                                                                         {
-                                                                         descuento_decimal = Math.Round(descuento_decimal + (descuento_decimal * Convert.ToDecimal(porc_descuento_global)));
+                                                                         descuento_decimal = Math.Round(descuento_decimal);
                                                                         }
 
                                                                         if (descuento_decimal < 0)
@@ -890,7 +913,9 @@ namespace ProxyVyV.ProxyVyV
                                                                             descuento = descuento_decimal.ToString();
                                                                         }
 
-                                                                        int desc = Int32.Parse(descuento) - ((Int32.Parse(descuento) * Int32.Parse(this.ParamValues.DTEVyV_TasaIVA)) / 100);
+
+                                                                        decimal desc = Math.Round(descuento_decimal / (1+ (Convert.ToDecimal(this.ParamValues.DTEVyV_TasaIVA) / 100)));
+                                                                        this.objLog.write("desc --> " + desc);
                                                                         descuento = "<DescuentoMonto>" + desc.ToString() + "</DescuentoMonto></Detalle>";
                                                                         plantdet = plantdet.Replace("#DESCUENTO#", descuento);
                                                                     }
@@ -904,7 +929,7 @@ namespace ProxyVyV.ProxyVyV
                                                                 catch
                                                                 {
                                                                     descuento = "</Detalle>";
-                                                                    plantdet = plantdet.Replace("#DESCUENTO#", descuento);
+                                                                    plantdet = plantdet.Replace("#DESCUENTO#", "");
                                                                 }
                                                                  contadordetalle = contadordetalle + 1;
                                                             }
@@ -916,17 +941,9 @@ namespace ProxyVyV.ProxyVyV
                                                         }
                                                     }
 
-                                                    int neto = Int32.Parse(monto_neto_suma_detalle.ToString());
-                                                    plant = plant.Replace("#MNTNETO#", neto.ToString());
-                                                    DTEValidaciones(neto.ToString(), "Monto Neto", 18, 3);
-
-                                                plant = plant.Replace("#DETALLE#", plantdet);
+                                                    plant = plant.Replace("#DETALLE#", plantdet);
                                                     #endregion,
                                                     #region Creacion Xml Referencia
-                                                    //string strjson4 = json2.GetValue("docitem").ToString(); //cambiar x referencia
-                                                    //JArray jsonArray1 = JArray.Parse(strjson4);
-                                                    //foreach (JObject jsonOperaciones in jsonArray1.Children<JObject>())
-                                                    //{
                                                     plantilla = new PlantillaXml();
                                                     plantref = string.Empty;
                                                     string email = json2.GetValue("btemail").ToString();
@@ -942,11 +959,35 @@ namespace ProxyVyV.ProxyVyV
                                                     plantref = plantref.Replace("#RAZONREF#", email);
                                                     //DTEValidaciones(json2.GetValue("btemail").ToString(), "Razon Referencia", 90, 2);
                                                     //}
-                                                plant = plant.Replace("#REFERENCIA#", plantref);
-                                                #endregion
+                                                    plant = plant.Replace("#REFERENCIA#", plantref);
+                                                    #endregion
+
+                                                    #region Creacion Xml Descuento
+                                                    if (!(String.IsNullOrEmpty(monto_descuento_global) || monto_descuento_global == "" || monto_descuento_global == "0"))
+                                                    {
+                                                        decimal descuento_global_decimal = Convert.ToDecimal(monto_descuento_global);
+                                                        decimal desc_global = Math.Round(descuento_global_decimal / (1 + (Convert.ToDecimal(this.ParamValues.DTEVyV_TasaIVA) / 100)));
+                                                        this.objLog.writeDTEVyV("Entre a doumento con DscRcgGlobal");
+                                                        plant = plant.Replace("#DCT_GLOBAL#", "<DscRcgGlobal>" +
+                                                                                          "<NroLinDR>1</NroLinDR>" +
+                                                                                          "<TpoMov>D</TpoMov>" +
+                                                                                          "<GlosaDR>descuento transaccion</GlosaDR>" +
+                                                                                          "<TpoValor>$</TpoValor>" +
+                                                                                          "<ValorDR>" + desc_global + "</ValorDR>" +
+                                                                                          "</DscRcgGlobal> ");
+
+                                                    }
+                                                    else
+                                                    {
+                                                        this.objLog.writeDTEVyV("Entre a doumento sin DscRcgGlobal");
+                                                        plant = plant.Replace("#DCT_GLOBAL#", "");
+                                                    }
+                                                    #endregion
+
+
                                                 #region Folio
 
-                                               // this.objLog.writeDTEVyV("Solicitando Folio");
+                                                // this.objLog.writeDTEVyV("Solicitando Folio");
                                                 folio = this.DTESolicitarFolio(DTEVyV_RutEmisor, posflag);
                                                 this.objLog.writeDTEVyV("Solicitando Obtenido "+ folio);
                                                 if (folio == "0")
@@ -6067,6 +6108,7 @@ namespace ProxyVyV.ProxyVyV
                         }
                         // this.objLog.write("SALIMOS");
                     }
+                
                 }
 
                 catch (PrismException exception6)
